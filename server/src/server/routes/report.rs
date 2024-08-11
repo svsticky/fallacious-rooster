@@ -23,10 +23,12 @@ pub async fn report(
     let payload = payload.into_inner();
 
     // Verify all provided advisors actually exist
+    let storage = wstorage.0.read().await;
+
     let advisors_exist = payload
         .to_confidential_advisors
         .iter()
-        .all(|advisor| wstorage.confidential_advisors.contains(advisor));
+        .all(|advisor| storage.confidential_advisors.contains(advisor));
 
     if !advisors_exist {
         // Request contains advisors who aren't on the list
@@ -47,7 +49,7 @@ pub async fn report(
     // Send to board if needed
     if payload.to_board {
         let body = render_report_board(&template)?;
-        send_report(&wconfig.email, vec![wstorage.board.clone()], body).await?;
+        send_report(&wconfig.email, vec![storage.board.clone()], body).await?;
     }
 
     Ok(Empty)

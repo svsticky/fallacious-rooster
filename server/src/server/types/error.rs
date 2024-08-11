@@ -10,8 +10,12 @@ pub enum Error {
     Email(#[from] crate::email::SendError),
     #[error("Failed to render email body: {0}")]
     TemplateRender(#[from] handlebars::RenderError),
-    #[error("Invalid confidential advisors provided")]
-    InvalidAdvisors,
+    #[error("File error: {0}")]
+    DataFileError(#[from] crate::file::DataFileError),
+    #[error("Advisor already exists")]
+    AdvisorAlreadyExists,
+    #[error("Advisor does not exist")]
+    AdvisorDoesNotExist,
 }
 
 impl ResponseError for Error {
@@ -19,7 +23,9 @@ impl ResponseError for Error {
         match self {
             Self::Email(_) => StatusCode::INTERNAL_SERVER_ERROR,
             Self::TemplateRender(_) => StatusCode::INTERNAL_SERVER_ERROR,
-            Self::InvalidAdvisors => StatusCode::BAD_REQUEST,
+            Self::DataFileError(_) => StatusCode::INTERNAL_SERVER_ERROR,
+            Self::AdvisorAlreadyExists => StatusCode::CONFLICT,
+            Self::AdvisorDoesNotExist => StatusCode::BAD_REQUEST,
         }
     }
 }

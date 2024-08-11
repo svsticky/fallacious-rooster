@@ -10,7 +10,7 @@ use thiserror::Error;
 
 use crate::server::types::WConfig;
 
-pub struct Authorization {
+pub struct Authorization<const Admin: bool = false> {
     pub full_name: String,
     pub is_admin: bool,
 }
@@ -23,9 +23,15 @@ pub enum AuthorizationError {
     Koala,
     #[error("Internal server error")]
     Internal,
+    #[error("Forbidden: Admin privileges are required.")]
+    Forbidden,
 }
 
-impl FromRequest for Authorization {
+impl<const Admin: bool> Authorization<Admin> {
+    const ADMIN: bool = Admin;
+}
+
+impl<const Admin: bool> FromRequest for Authorization<Admin> {
     type Error = AuthorizationError;
     type Future = Pin<Box<dyn Future<Output = Result<Self, Self::Error>>>>;
 
@@ -55,6 +61,10 @@ impl FromRequest for Authorization {
                     }
                 }
             };
+
+            if Self::ADMIN && !userinfo.is_admin {
+                return Err(AuthorizationError::Forbidden);
+            }
 
             Ok(Self {
                 full_name: userinfo.full_name,
@@ -87,6 +97,7 @@ impl ResponseError for AuthorizationError {
             Self::NoToken => StatusCode::UNAUTHORIZED,
             Self::Koala => StatusCode::BAD_GATEWAY,
             Self::Internal => StatusCode::INTERNAL_SERVER_ERROR,
+            Self::Forbidden => StatusCode::FORBIDDEN,
         }
     }
 }
