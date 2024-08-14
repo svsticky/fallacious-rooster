@@ -16,6 +16,10 @@ pub enum Error {
     AdvisorAlreadyExists,
     #[error("Advisor does not exist")]
     AdvisorDoesNotExist,
+    #[error("Internal server error")]
+    Internal,
+    #[error("Unauthorized")]
+    Unauthorized,
 }
 
 impl ResponseError for Error {
@@ -26,6 +30,8 @@ impl ResponseError for Error {
             Self::DataFileError(_) => StatusCode::INTERNAL_SERVER_ERROR,
             Self::AdvisorAlreadyExists => StatusCode::CONFLICT,
             Self::AdvisorDoesNotExist => StatusCode::BAD_REQUEST,
+            Self::Internal => StatusCode::INTERNAL_SERVER_ERROR,
+            Self::Unauthorized => StatusCode::UNAUTHORIZED,
         }
     }
 }

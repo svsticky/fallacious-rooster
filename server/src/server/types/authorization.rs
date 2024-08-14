@@ -10,9 +10,8 @@ use thiserror::Error;
 
 use crate::server::types::WConfig;
 
-pub struct Authorization<const Admin: bool = false> {
+pub struct Authorization<const ADMIN: bool = false> {
     pub full_name: String,
-    pub is_admin: bool,
 }
 
 #[derive(Debug, Error)]
@@ -27,11 +26,11 @@ pub enum AuthorizationError {
     Forbidden,
 }
 
-impl<const Admin: bool> Authorization<Admin> {
-    const ADMIN: bool = Admin;
+impl<const ADMIN: bool> Authorization<ADMIN> {
+    const ADMIN: bool = ADMIN;
 }
 
-impl<const Admin: bool> FromRequest for Authorization<Admin> {
+impl<const ADMIN: bool> FromRequest for Authorization<ADMIN> {
     type Error = AuthorizationError;
     type Future = Pin<Box<dyn Future<Output = Result<Self, Self::Error>>>>;
 
@@ -68,19 +67,26 @@ impl<const Admin: bool> FromRequest for Authorization<Admin> {
 
             Ok(Self {
                 full_name: userinfo.full_name,
-                is_admin: userinfo.is_admin,
             })
         })
     }
 }
 
 fn get_token(req: &HttpRequest) -> Option<String> {
-    let header_value = header(req, "Authorization")?;
-    if !header_value.starts_with("Bearer ") {
+    // Get the authorization from the Authorization header or an Authorization cookie
+    let value = match header(req, "Authorization") {
+        Some(header_value) => header_value,
+        None => match req.cookie("Authorization") {
+            Some(cookie) => cookie.value().to_string(),
+            None => return None,
+        },
+    };
+
+    if !value.starts_with("Bearer ") {
         return None;
     }
 
-    Some(header_value.chars().skip(7).collect())
+    Some(value.chars().skip(7).collect())
 }
 
 fn header(req: &HttpRequest, name: &str) -> Option<String> {

@@ -2,7 +2,7 @@ use crate::email::send_report;
 use crate::email::template::{
     render_report_board, render_report_confidential_advisors, ReportTemplate,
 };
-use crate::server::types::{Authorization, Empty, WConfig, WResult, WStorage};
+use crate::server::types::{Authorization, Empty, Error, WConfig, WResult, WStorage};
 use actix_web::web;
 use serde::Deserialize;
 
@@ -32,6 +32,7 @@ pub async fn report(
 
     if !advisors_exist {
         // Request contains advisors who aren't on the list
+        return Err(Error::AdvisorDoesNotExist);
     }
 
     let template = ReportTemplate {

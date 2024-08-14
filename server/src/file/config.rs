@@ -8,7 +8,13 @@ pub struct AppConfig {
     pub server: ServerConfig,
     pub koala: KoalaConfig,
     pub email: EmailConfig,
+    pub frontend: FrontendConfig,
     pub local_storage: PathBuf,
+}
+
+#[derive(Debug, Default, Clone, Deserialize, Serialize)]
+pub struct FrontendConfig {
+    pub home_page_url: String,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]

@@ -15,6 +15,7 @@ impl Redirect {
         }
     }
 
+    #[allow(unused)]
     pub fn new_with_body<S: AsRef<str>, B: AsRef<str>>(to: S, body: B) -> Self {
         Self {
             to: to.as_ref().to_string(),
