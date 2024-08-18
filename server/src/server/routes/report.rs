@@ -25,10 +25,13 @@ pub async fn report(
     // Verify all provided advisors actually exist
     let storage = wstorage.0.read().await;
 
-    let advisors_exist = payload
-        .to_confidential_advisors
-        .iter()
-        .all(|advisor| storage.confidential_advisors.contains(advisor));
+    let advisors_exist = payload.to_confidential_advisors.iter().all(|advisor| {
+        storage
+            .confidential_advisors
+            .iter()
+            .find(|adv| adv.email.eq(advisor))
+            .is_some()
+    });
 
     if !advisors_exist {
         // Request contains advisors who aren't on the list

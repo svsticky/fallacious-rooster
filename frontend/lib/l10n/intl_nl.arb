@@ -1,0 +1,14 @@
+{
+  "@@locale": "nl",
+  "title": "",
+  "description": "Welkom bij het anonieme meldpunt van Sticky. Je kunt hier anoniem een melding maken van ongewenst gedrag, maar ook van andere zaken die je dwars liggen. Je kunt de melding sturen naar het bestuur of naar de contactpersonen.",
+  "required": "Vereist",
+  "messageBoxLabel": "Jouw bericht",
+  "mayContact": "Mogen we contact met je opnemen? (Je email adres wordt dan meegestuurd)",
+  "yourEmail": "Jouw email adres, als je wilt dat we contact met je opnemen",
+  "emailInvalid": "Ongeldig email adres",
+  "toBoard": "Wil je dat jouw bericht naar het bestuur gaat?",
+  "confidentialAdvisorsLabel": "Naar welke vertrouwenscontactpersonen wil je dat je bericht gestuurd word?",
+  "selectButtonLabel": "Selecteer",
+  "cancelButtonLabel": "Annuleren"
+}

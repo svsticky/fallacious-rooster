@@ -1,10 +1,10 @@
+use crate::server::types::{Error, Redirect, SetCookie, WConfig, WResult};
 use actix_web::http::StatusCode;
 use actix_web::web;
 use cabbage::oauth::ClientConfig;
 use cabbage::KoalaApi;
 use serde::Deserialize;
-
-use crate::server::types::{Error, Redirect, SetCookie, WConfig, WResult};
+use tracing::trace;
 
 #[derive(Debug, Deserialize)]
 pub struct Query {
@@ -24,7 +24,11 @@ pub async fn callback(config: WConfig, query: web::Query<Query>) -> WResult<SetC
         .await
         .map_err(|e| match e.status() {
             Some(StatusCode::UNAUTHORIZED) => Error::Unauthorized,
-            _ => Error::Internal,
+            Some(StatusCode::BAD_REQUEST) => Error::Unauthorized,
+            _ => {
+                trace!("{e}");
+                Error::Internal
+            }
         })?;
 
     Ok(SetCookie::new(

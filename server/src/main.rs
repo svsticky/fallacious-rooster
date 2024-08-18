@@ -16,8 +16,8 @@ async fn main() -> color_eyre::Result<()> {
     init_tracing()?;
 
     let args = AppArgs::parse();
-    let config = AppConfig::try_read(&args.config).await?;
-    let local_storage = AppStorage::try_read(&config.local_storage).await?;
+    let config = AppConfig::try_read(&args.config, true).await?;
+    let local_storage = AppStorage::try_read(&config.local_storage, false).await?;
 
     server::run_server(config, local_storage).await
 }

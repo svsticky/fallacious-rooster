@@ -22,9 +22,9 @@ impl<T: Responder> Responder for SetCookie<T> {
 
     fn respond_to(self, req: &HttpRequest) -> HttpResponse<Self::Body> {
         let mut response = self.inner.respond_to(req);
-        response
-            .add_cookie(&Cookie::new(self.cookie_name, self.cookie_value))
-            .unwrap();
+        let mut cookie = Cookie::new(self.cookie_name, self.cookie_value);
+        cookie.set_path("/");
+        response.add_cookie(&cookie).unwrap();
 
         response
     }

@@ -17,13 +17,18 @@ pub async fn remove(
 ) -> WResult<Empty> {
     let mut storage = storage.0.write().await;
 
-    if !storage.confidential_advisors.contains(&payload.email) {
-        return Err(Error::AdvisorDoesNotExist);
+    if storage
+        .confidential_advisors
+        .iter()
+        .find(|adv| adv.email.eq(&payload.email))
+        .is_some()
+    {
+        return Err(Error::AdvisorAlreadyExists);
     }
 
     storage
         .confidential_advisors
-        .retain(|advisor| advisor.ne(&payload.email));
+        .retain(|advisor| advisor.email.ne(&payload.email));
     storage.try_write(&config.local_storage).await?;
 
     Ok(Empty)

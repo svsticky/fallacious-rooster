@@ -1,17 +1,17 @@
-use std::future::Future;
-use std::pin::Pin;
-
+use crate::server::types::WConfig;
 use actix_web::dev::Payload;
 use actix_web::http::StatusCode;
 use actix_web::{FromRequest, HttpRequest, ResponseError};
 use cabbage::oauth::ClientConfig;
 use cabbage::KoalaApi;
+use std::future::Future;
+use std::pin::Pin;
+use std::str::FromStr;
 use thiserror::Error;
-
-use crate::server::types::WConfig;
 
 pub struct Authorization<const ADMIN: bool = false> {
     pub full_name: String,
+    pub is_admin: bool,
 }
 
 #[derive(Debug, Error)]
@@ -37,6 +37,14 @@ impl<const ADMIN: bool> FromRequest for Authorization<ADMIN> {
     fn from_request(req: &HttpRequest, _: &mut Payload) -> Self::Future {
         let req = req.clone();
         Box::pin(async move {
+            #[cfg(debug_assertions)]
+            if is_debug_allow_unauthorized(&req) {
+                return Ok(Self {
+                    full_name: "Debug Admin".to_string(),
+                    is_admin: true,
+                });
+            }
+
             let token = match get_token(&req) {
                 Some(token) => token,
                 None => return Err(AuthorizationError::NoToken),
@@ -67,8 +75,22 @@ impl<const ADMIN: bool> FromRequest for Authorization<ADMIN> {
 
             Ok(Self {
                 full_name: userinfo.full_name,
+                is_admin: userinfo.is_admin,
             })
         })
+    }
+}
+
+/// Check if the `X-DebugAllowUnauthorized` header is present.
+/// This is useful when working on the UI using the native Linux application,
+/// which doesn't support browser redirects (obviously).
+///
+/// During devlopment ACL can be ignored this way.
+#[cfg(debug_assertions)]
+fn is_debug_allow_unauthorized(req: &HttpRequest) -> bool {
+    match header(req, "X-DebugAllowUnauthorized") {
+        Some(hv) => bool::from_str(&hv).unwrap_or(false),
+        None => false,
     }
 }
 

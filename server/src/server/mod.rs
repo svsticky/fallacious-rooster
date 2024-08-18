@@ -22,7 +22,6 @@ pub async fn run_server(config: AppConfig, storage: AppStorage) -> color_eyre::R
             .app_data(storage.clone())
             .configure(routes::Router::configure)
     })
-    .bind(format!("[::]:{port}"))?
     .bind(format!("0.0.0.0:{port}"))?
     .run()
     .await?;

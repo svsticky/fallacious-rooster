@@ -23,12 +23,17 @@ pub enum DataFileError {
 }
 
 pub trait DataFile: Default + Serialize + DeserializeOwned {
-    async fn try_read<P: AsRef<Path>>(from: P) -> Result<Self, DataFileError> {
+    async fn try_read<P: AsRef<Path>>(from: P, fail_on_ne: bool) -> Result<Self, DataFileError> {
         let from = from.as_ref();
 
         if !from.exists() {
             Self::try_write_new(from).await?;
-            return Err(DataFileError::NewEmptyFileCreated);
+
+            return if fail_on_ne {
+                Err(DataFileError::NewEmptyFileCreated)
+            } else {
+                Ok(Self::default())
+            };
         }
 
         let mut f = fs::File::open(from).await?;

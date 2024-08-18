@@ -1,0 +1,22 @@
+{
+  "server": {
+    "port": 8080,
+    "domain": "flutter.localhost:8080"
+  },
+  "koala": {
+    "koala_host": "http://koala.rails.local:3000",
+    "client_id": "aCpJiGdJLDkMjDvYyt6PUUY5OvJ5j5pxFN8zgSDySFI",
+    "client_secret": "lF8NKubl25HhVRMti6S1CjlTvajk3liiQzKPM5jkYnc",
+    "redirect_uri": "http://flutter.localhost:8080/api/oauth/callback"
+  },
+  "email": {
+    "from_email": "anoniem@svsticky.nl",
+    "from_name": "SVSticky Anoniem Meldpunt",
+    "smtp_relay": "smtp-relay.gmail.com"
+  },
+  "frontend": {
+    "home_page_url": "http://flutter.localhost:3001/",
+    "domain": "flutter.localhost:3001"
+  },
+  "local_storage": "./storage.json"
+}
