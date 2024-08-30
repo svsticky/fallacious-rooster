@@ -1,16 +1,10 @@
-# fallacious_rooster
+# Vuetify Template
+Template for Vue 3 projects with Vuetify and Vite.
 
-A new Flutter project.
+## Changes to make
+- ./index.html : site title
+- ./public/favicon.ico
+- ./src/main.ts : server address
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## License
+MIT or Apache-2.0, at your option

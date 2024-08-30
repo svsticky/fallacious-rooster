@@ -5,8 +5,8 @@
   },
   "koala": {
     "koala_host": "http://koala.rails.local:3000",
-    "client_id": "aCpJiGdJLDkMjDvYyt6PUUY5OvJ5j5pxFN8zgSDySFI",
-    "client_secret": "lF8NKubl25HhVRMti6S1CjlTvajk3liiQzKPM5jkYnc",
+    "client_id": "xgLEH0B_x0NKUhW0nsQBF-eaFSlA-6q-2j6feqrSmcQ",
+    "client_secret": "ZM_sGeJnQ4Sc4nGscJYWZ2CVAuRMg1vRU5uC0T7wGnc",
     "redirect_uri": "http://flutter.localhost:8080/api/oauth/callback"
   },
   "email": {
