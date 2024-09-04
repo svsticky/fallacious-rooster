@@ -9,6 +9,15 @@
       v-if="error != null"
     />
 
+    <v-alert
+      icon="mdi-send-check"
+      title="Success"
+      :text=success
+      @click:close="success = null"
+      type="error"
+      v-if="success != null"
+    />
+
     <v-card>
       <v-card-title>{{ $t('home.welcome.title')}} </v-card-title>
       <v-card-text>
@@ -17,9 +26,7 @@
         <h3 class="mt-4">{{ $t('home.form.title')}}</h3>
         <p> {{ $t('home.form.subtitle')}} </p>
 
-        <v-form
-          v-model="report.valid"
-          itemref="reportForm">
+        <v-form v-model="report.valid">
           <v-textarea
             :label="$t('home.form.message')"
             v-model="report.message"
@@ -100,16 +107,18 @@
 import {defineComponent} from "vue";
 import {ConfidentialAdvisor} from "@/scripts/config";
 import {InputValidationRules} from "@/main";
-import {VForm} from "vuetify/components/VForm";
+import {Report} from "@/scripts/report"
 
 interface Data {
   error: string | null,
+  success: string | null,
   report: {
     valid: boolean,
     message: string | null,
     toBoard: boolean,
     toAdvisors: ConfidentialAdvisor[],
     contactEmail: string | null,
+    loading: boolean,
   },
   advisors: ConfidentialAdvisor[],
   rules: {
@@ -128,6 +137,7 @@ export default defineComponent({
         toBoard: false,
         toAdvisors: [],
         contactEmail: null,
+        loading: false,
       },
       advisors: [],
       rules: {
@@ -147,21 +157,32 @@ export default defineComponent({
     async loadAdvisors() {
       const r = await ConfidentialAdvisor.list();
       if(r.isErr()) {
-        this.error = r.unwrapErr().message?? "Something went wrong";
+        this.error = this.$t("error");
         return;
       }
 
       this.advisors = r.unwrap();
     },
     async submitForm() {
-      let form = this.$refs.reportForm as VForm;
-
-      if(!this.report.valid || await form.validate()) {
+      if(!this.report.valid) {
         this.error = this.$t("home.form.invalid");
         return;
       }
 
+      if(this.report.toAdvisors.length == 0 && !this.report.toBoard) {
+        this.error = this.$t("home.form.selectRecipient");
+        return;
+      }
 
+      this.report.loading = true;
+      const r = await Report.report(this.report.message!, this.report.toBoard, this.report.toAdvisors, this.report.contactEmail);
+      this.report.loading = false;
+
+      if(r.isErr()) {
+        this.error = this.$t("error");
+      } else {
+        this.success = this.$t("home.success");
+      }
     }
   }
 })

@@ -1,13 +1,13 @@
 {
-  "board": "",
+  "board": "penningmeester@svsticky.nl",
   "confidential_advisors": [
-    {
-      "name": "Mervin de Jong",
-      "email": "mervin@svsticky.nl"
-    },
     {
       "name": "Marian Biekart",
       "email": "marian@svsticky.nl"
+    },
+    {
+      "name": "Mervin de Jong",
+      "email": "mervin@svsticky.nl"
     }
   ]
 }

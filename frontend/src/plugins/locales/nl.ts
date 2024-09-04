@@ -2,6 +2,7 @@ import {Locale} from "@/plugins/locales/locale";
 
 const NL: Locale = {
   site_title: "Anoniem meldpunt",
+  error: "Er is iets verkeerd gegaan, probeer het later opnieuw",
   home: {
     welcome: {
       title: "Welkom bij het anonieme meldpunt van Sticky",
@@ -19,8 +20,10 @@ const NL: Locale = {
       toBoard: "Wil je dat jouw bericht naar het bestuur wordt verstuurd?",
       selectAdvisors: "Selecteer vertrouwenscontactpersonen",
       contactEmail: "Email adres",
-      contactEmailExplanation: "Wil je dat we contact met je kunnen opgeven? Zo ja, geef hier dan het email adres op waarop we jou mogen bereiken"
-    }
+      contactEmailExplanation: "Wil je dat we contact met je kunnen opgeven? Zo ja, geef hier dan het email adres op waarop we jou mogen bereiken. Uiteraard is dit niet verplicht",
+      selectRecipient: "Selecteer minstens een ontvanger voor je melding"
+    },
+    success: "Je bericht is verzonden!"
   }
 }
 

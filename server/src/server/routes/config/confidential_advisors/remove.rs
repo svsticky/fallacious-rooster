@@ -21,9 +21,9 @@ pub async fn remove(
         .confidential_advisors
         .iter()
         .find(|adv| adv.email.eq(&payload.email))
-        .is_some()
+        .is_none()
     {
-        return Err(Error::AdvisorAlreadyExists);
+        return Err(Error::AdvisorDoesNotExist);
     }
 
     storage

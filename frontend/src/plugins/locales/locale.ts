@@ -1,5 +1,6 @@
 export interface Locale {
   site_title: string;
+  error: string;
   home: {
     welcome: {
       title: string;
@@ -18,6 +19,8 @@ export interface Locale {
       required: string;
       invalidEmail: string;
       invalid: string;
-    }
+      selectRecipient: string;
+    },
+    success: string;
   }
 }

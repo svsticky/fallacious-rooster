@@ -17,7 +17,7 @@ pub struct ReportRequest {
 pub async fn report(
     wconfig: WConfig,
     wstorage: WStorage,
-    auth: Authorization,
+    _: Authorization,
     payload: web::Json<ReportRequest>,
 ) -> WResult<Empty> {
     let payload = payload.into_inner();
@@ -40,7 +40,7 @@ pub async fn report(
 
     let template = ReportTemplate {
         message: payload.message,
-        contact_address: payload.contact_address
+        contact_address: payload.contact_address,
     };
 
     // Send to confidential advisors if needed
