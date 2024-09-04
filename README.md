@@ -1,4 +1,4 @@
-# fellacious-rooster
+# fallacious-rooster
 Anonymous reporting point for social safety for study association Sticky.
 This reporting point allows you to anonymously send a message to either the board or to the confidential advisors, or both.
 
