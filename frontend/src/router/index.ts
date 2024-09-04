@@ -11,6 +11,16 @@ const routes: Array<RouteRecordRaw> = [
       }
     ]
   },
+  {
+    path: '/admin',
+    component: () => import('@/layouts/AuthorizedAdmin.vue'),
+    children: [
+      {
+        path: 'settings',
+        component: () => import('@/views/Settings.vue'),
+      }
+    ]
+  }
 ]
 
 const router = createRouter({

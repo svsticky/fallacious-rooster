@@ -4,6 +4,7 @@ import NL from "@/plugins/locales/nl";
 
 export default createI18n({
   fallbackLocale: 'nl',
+  locale: 'nl',
   messages: {
     en: EN,
     nl: NL

@@ -1,72 +1,55 @@
 <template>
     <v-app>
-        <v-main v-if="loginErrorText != null">
+        <v-main v-if="error != null">
             <v-alert
                 icon="mdi-alert-circle-outline"
                 title="Login failed"
-                :text=loginErrorText
+                :text=error
                 type="error"
-                v-if="loginErrorText != null"
+                v-if="error != null"
             />
         </v-main>
 
-        <AppBar v-if="loginOk" />
+        <AppBar v-if="loginOk" :is-admin="isAdmin"/>
         <View v-if="loginOk" />
     </v-app>
 </template>
 
 <script lang="ts">
 
-import {OAuth2Client} from "@/scripts/oauth2";
-import {ApiError} from "@/scripts/core/error";
 import {defineComponent} from "vue";
 import View from "./components/View.vue";
 import AppBar from "./components/AppBar.vue";
+import {checkLogin} from "@/layouts/authorized";
+
+interface Data {
+  error: string | null,
+  loginOk: boolean,
+  isAdmin: boolean,
+}
 
 export default defineComponent({
     components: {AppBar, View},
     async mounted() {
-        await this.checkLogin();
+        const r = await checkLogin();
+        if(r.isOk()) {
+          const loginState = r.unwrap();
+          this.loginOk = loginState.ok;
+          this.isAdmin = loginState.isAdmin;
+
+        } else {
+          this.error = r.unwrapErr();
+        }
     },
-    data() {
+    data(): Data {
         return {
-            loginErrorText: null,
-            loginOk: false,
+          error: null,
+          loginOk: false,
+          isAdmin: false,
         }
     },
     methods: {
-        async checkLogin() {
-            const result = await OAuth2Client.ok();
-            if(result.isOk()) {
-                window.localStorage.setItem('koala-admin', true);
-                this.loginOk = true;
-            } else {
-                const error: ApiError = result.unwrapErr();
-                switch(error.status!) {
-                    case 401: {
-                        const loginLocation = await OAuth2Client.login();
-                        if(loginLocation.isOk()) {
-                            window.location.href = loginLocation.unwrap();
-                        } else {
-                            this.loginErrorText = "Could not log you in. Please try again later";
-                            console.error(`Login redirect failed (${error.status}): ${error.message}`);
-                        }
 
-                        break;
-                    }
-                    case 500:
-                    case 502: {
-                        this.loginErrorText = "The server is having some troubles. Please try again later";
-                        break;
-                    }
-                    default: {
-                        console.error(`Login check failed (${error.status}): ${error.message}`);
-                        this.loginErrorText = "Could not log you in. Please try again later";
-                        break
-                    }
-                }
-            }
-        }
     }
 })
 </script>

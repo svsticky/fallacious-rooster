@@ -12,7 +12,6 @@
     <v-menu>
       <template v-slot:activator="{ props }">
         <v-btn
-          class="mr-12"
           icon="mdi-web"
           v-bind="props"
         />
@@ -29,6 +28,12 @@
         </v-list-item>
       </v-list>
     </v-menu>
+
+    <v-btn
+      v-if="isAdmin"
+      icon="mdi-cog"
+      to="/admin/settings"
+    />
   </v-app-bar>
 </template>
 
@@ -36,6 +41,9 @@
 import {defineComponent} from "vue";
 
 export default defineComponent({
+  props: {
+    isAdmin: Boolean,
+  },
   data() {
     return {
       locales: [
@@ -47,7 +55,7 @@ export default defineComponent({
   methods: {
     setLocale(locale: string) {
       console.log(`Changing locale to ${locale}`);
-      this.$root.$i18n.locale = locale;
+      this.$root!.$i18n.locale = locale;
     }
   }
 });
