@@ -10,7 +10,6 @@ use std::str::FromStr;
 use thiserror::Error;
 
 pub struct Authorization<const ADMIN: bool = false> {
-    pub full_name: String,
     pub is_admin: bool,
 }
 
@@ -40,7 +39,6 @@ impl<const ADMIN: bool> FromRequest for Authorization<ADMIN> {
             #[cfg(debug_assertions)]
             if is_debug_allow_unauthorized(&req) {
                 return Ok(Self {
-                    full_name: "Debug Admin".to_string(),
                     is_admin: true,
                 });
             }
@@ -74,7 +72,6 @@ impl<const ADMIN: bool> FromRequest for Authorization<ADMIN> {
             }
 
             Ok(Self {
-                full_name: userinfo.full_name,
                 is_admin: userinfo.is_admin,
             })
         })

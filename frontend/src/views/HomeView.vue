@@ -1,6 +1,7 @@
 <template>
   <v-container>
     <v-alert
+      class="mt-2"
       icon="mdi-alert-circle-outline"
       title="Error"
       :text=error
@@ -10,11 +11,12 @@
     />
 
     <v-alert
+      class="mt-2"
       icon="mdi-send-check"
       title="Success"
       :text=success
       @click:close="success = null"
-      type="error"
+      type="success"
       v-if="success != null"
     />
 
@@ -131,6 +133,7 @@ export default defineComponent({
   data(): Data {
     return {
       error: null,
+      success: null,
       report: {
         valid: true,
         message: null,

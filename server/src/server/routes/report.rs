@@ -2,9 +2,10 @@ use crate::email::send_report;
 use crate::email::template::{
     render_report_board, render_report_confidential_advisors, ReportTemplate,
 };
-use crate::server::types::{Authorization, Empty, Error, WConfig, WResult, WStorage};
+use crate::server::types::{Authorization, Empty, Error, WArgs, WConfig, WResult, WStorage};
 use actix_web::web;
 use serde::Deserialize;
+use tracing::info;
 
 #[derive(Debug, Deserialize)]
 pub struct ReportRequest {
@@ -19,6 +20,7 @@ pub async fn report(
     wstorage: WStorage,
     _: Authorization,
     payload: web::Json<ReportRequest>,
+    args: WArgs,
 ) -> WResult<Empty> {
     let payload = payload.into_inner();
 
@@ -46,13 +48,25 @@ pub async fn report(
     // Send to confidential advisors if needed
     if !payload.to_confidential_advisors.is_empty() {
         let body = render_report_confidential_advisors(&template)?;
-        send_report(&wconfig.email, payload.to_confidential_advisors, body).await?;
+
+        if args.dry_run {
+             info!("Not sending email because --dry-run is set. The mail looks as follows:\n{body}");
+        } else {
+            send_report(&wconfig.email, payload.to_confidential_advisors, body).await?;
+        }
+
     }
 
     // Send to board if needed
     if payload.to_board {
         let body = render_report_board(&template)?;
-        send_report(&wconfig.email, vec![storage.board.clone()], body).await?;
+
+        if args.dry_run {
+            info!("Not sending email because --dry-run is set. The mail looks as follows:\n{body}");
+        } else {
+            send_report(&wconfig.email, vec![storage.board.clone()], body).await?;
+        }
+
     }
 
     Ok(Empty)
