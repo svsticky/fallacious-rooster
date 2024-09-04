@@ -50,11 +50,10 @@ pub async fn report(
         let body = render_report_confidential_advisors(&template)?;
 
         if args.dry_run {
-             info!("Not sending email because --dry-run is set. The mail looks as follows:\n{body}");
+            info!("Not sending email because --dry-run is set. The mail looks as follows:\n{body}");
         } else {
             send_report(&wconfig.email, payload.to_confidential_advisors, body).await?;
         }
-
     }
 
     // Send to board if needed
@@ -66,7 +65,6 @@ pub async fn report(
         } else {
             send_report(&wconfig.email, vec![storage.board.clone()], body).await?;
         }
-
     }
 
     Ok(Empty)

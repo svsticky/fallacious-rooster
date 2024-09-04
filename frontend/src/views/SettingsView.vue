@@ -6,7 +6,7 @@
           icon="mdi-arrow-left"
           to="/"
           variant="plain"
-        ></v-btn>
+        />
         Settings
       </v-card-title>
       <v-card-text>
@@ -16,8 +16,9 @@
             <v-expansion-panel-text>
               <v-data-table
                 :items="config.confidentialAdvisors"
-                :headers="headers.confidentialAdvisors">
-                <template v-slot:[`item.actions`]="{ item }">
+                :headers="headers.confidentialAdvisors"
+              >
+                <template #[`item.actions`]="{ item }">
                   <v-btn
                     icon="mdi-delete"
                     size="32"
@@ -28,31 +29,38 @@
               </v-data-table>
 
               <h3>Add confidential advisor</h3>
-              <v-form ref="newAdvisorForm" v-model="config.newAdvisor.valid">
-                <v-row align="center" justify="space-between">
+              <v-form
+                ref="newAdvisorForm"
+                v-model="config.newAdvisor.valid"
+              >
+                <v-row
+                  align="center"
+                  justify="space-between"
+                >
                   <v-col>
                     <v-text-field
-                      label="Name"
                       v-model="config.newAdvisor.name"
+                      label="Name"
                       :rules="rules.required"
                       color="primary"
                     />
                   </v-col>
                   <v-col>
                     <v-text-field
-                      label="Email"
                       v-model="config.newAdvisor.email"
+                      label="Email"
                       :rules="rules.email"
                       color="primary"
                     />
                   </v-col>
                   <v-col>
                     <v-btn
-                      @click="addConfidentialAdvisor"
                       color="primary"
                       class="mb-5"
                       :loading="config.newAdvisor.loading"
-                      :disabled="!config.newAdvisor.valid || config.newAdvisor.loading">
+                      :disabled="!config.newAdvisor.valid || config.newAdvisor.loading"
+                      @click="addConfidentialAdvisor"
+                    >
                       Save
                     </v-btn>
                   </v-col>
@@ -82,9 +90,9 @@
                       icon="mdi-content-save-outline"
                       class="mb-4"
                       color="primary"
-                      @click="updateBoardEmail"
                       :loading="config.board.loading"
                       :disabled="!config.board.valid && config.board.loading"
+                      @click="updateBoardEmail"
                     />
                   </v-col>
                 </v-row>

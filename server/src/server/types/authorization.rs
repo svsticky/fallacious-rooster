@@ -38,9 +38,7 @@ impl<const ADMIN: bool> FromRequest for Authorization<ADMIN> {
         Box::pin(async move {
             #[cfg(debug_assertions)]
             if is_debug_allow_unauthorized(&req) {
-                return Ok(Self {
-                    is_admin: true,
-                });
+                return Ok(Self { is_admin: true });
             }
 
             let token = match get_token(&req) {

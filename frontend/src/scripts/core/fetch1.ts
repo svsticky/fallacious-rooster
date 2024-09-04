@@ -17,7 +17,7 @@ export async function fetch1(input: RequestInfo | URL, init?: RequestInit): Prom
     }
 
     return Result.ok(r);
-  } catch (error: any) {
+  } catch (error: unknown) {
     return Result.err(ApiError.request(-1, error.toString()))
   }
 }

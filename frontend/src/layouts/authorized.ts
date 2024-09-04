@@ -42,6 +42,7 @@ export async function checkLogin(requireAdmin: boolean = false): Promise<Result<
           return Result.err("Could not log you in. Please try again later");
         }
       }
+      // eslint-disable-next-line no-fallthrough
       case 500:
       case 502: {
         console.error(`Login check failed (${error.status}): ${error.message}`);

@@ -3,7 +3,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    component: () => import('@/layouts/Authorized.vue'),
+    component: () => import('@/layouts/AuthorizedMiddleware.vue'),
     children: [
       {
         path: '',
@@ -13,11 +13,11 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/admin',
-    component: () => import('@/layouts/AuthorizedAdmin.vue'),
+    component: () => import('@/layouts/AuthorizedAdminMiddleware.vue'),
     children: [
       {
         path: 'settings',
-        component: () => import('@/views/Settings.vue'),
+        component: () => import('@/views/SettingsView.vue'),
       }
     ]
   }

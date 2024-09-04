@@ -1,16 +1,22 @@
 <template>
-  <v-app-bar elevation="1" color="primary">
+  <v-app-bar
+    elevation="1"
+    color="primary"
+  >
     <v-app-bar-title>
       <v-avatar>
-        <v-img src="https://public.svsticky.nl/logos/hoofd_outline_wit.svg" alt="sticky-logo" />
+        <v-img
+          src="https://public.svsticky.nl/logos/hoofd_outline_wit.svg"
+          alt="sticky-logo"
+        />
       </v-avatar>
       {{ $t('site_title') }}
     </v-app-bar-title>
 
-    <v-spacer/>
+    <v-spacer />
 
     <v-menu>
-      <template v-slot:activator="{ props }">
+      <template #activator="{ props }">
         <v-btn
           icon="mdi-web"
           v-bind="props"
@@ -21,9 +27,10 @@
         <v-list-item
           v-for="locale in locales"
           :key="locale.locale"
-          @click="setLocale(locale.locale)">
+          @click="setLocale(locale.locale)"
+        >
           <v-list-item-media>
-            <v-img :src="locale.icon"></v-img>
+            <v-img :src="locale.icon" />
           </v-list-item-media>
         </v-list-item>
       </v-list>

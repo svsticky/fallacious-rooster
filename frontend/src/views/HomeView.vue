@@ -1,37 +1,39 @@
 <template>
   <v-container>
     <v-alert
+      v-if="error != null"
       class="mt-2"
       icon="mdi-alert-circle-outline"
       title="Error"
-      :text=error
-      @click:close="error = null"
+      :text="error"
       type="error"
-      v-if="error != null"
+      @click:close="error = null"
     />
 
     <v-alert
+      v-if="success != null"
       class="mt-2"
       icon="mdi-send-check"
       title="Success"
-      :text=success
-      @click:close="success = null"
+      :text="success"
       type="success"
-      v-if="success != null"
+      @click:close="success = null"
     />
 
     <v-card>
-      <v-card-title>{{ $t('home.welcome.title')}} </v-card-title>
+      <v-card-title>{{ $t('home.welcome.title') }} </v-card-title>
       <v-card-text>
         <p>{{ $t('home.welcome.subtitle') }} </p>
 
-        <h3 class="mt-4">{{ $t('home.form.title')}}</h3>
-        <p> {{ $t('home.form.subtitle')}} </p>
+        <h3 class="mt-4">
+          {{ $t('home.form.title') }}
+        </h3>
+        <p> {{ $t('home.form.subtitle') }} </p>
 
         <v-form v-model="report.valid">
           <v-textarea
-            :label="$t('home.form.message')"
             v-model="report.message"
+            :label="$t('home.form.message')"
             auto-grow
             :rules="rules.required"
             rows="5"
@@ -88,17 +90,17 @@
               />
             </v-col>
           </v-row>
-
         </v-form>
       </v-card-text>
 
       <v-card-actions>
-        <v-spacer></v-spacer>
+        <v-spacer />
         <v-btn
           variant="tonal"
           elevation="1"
           color="primary"
-          @click="submitForm">
+          @click="submitForm"
+        >
           {{ $t('home.form.submit') }}
         </v-btn>
       </v-card-actions>

@@ -2,23 +2,26 @@
   <v-app>
     <v-main v-if="error != null">
       <v-alert
+        v-if="error != null"
         icon="mdi-alert-circle-outline"
         title="Login failed"
-        :text=error
+        :text="error"
         type="error"
-        v-if="error != null"
       />
     </v-main>
 
-    <AppBar v-if="loginOk" :is-admin="isAdmin"/>
-    <View v-if="loginOk" />
+    <AppBar
+      v-if="loginOk"
+      :is-admin="isAdmin"
+    />
+    <RouterView v-if="loginOk" />
   </v-app>
 </template>
 
 <script lang="ts">
 
 import {defineComponent} from "vue";
-import View from "./components/View.vue";
+import RouterView from "./components/RouterView.vue";
 import AppBar from "./components/AppBar.vue";
 import {checkLogin} from "@/layouts/authorized";
 
@@ -29,7 +32,14 @@ interface Data {
 }
 
 export default defineComponent({
-  components: {AppBar, View},
+  components: {AppBar, RouterView},
+  data(): Data {
+    return {
+      error: null,
+      isAdmin: false,
+      loginOk: false,
+    }
+  },
   async mounted() {
     const r = await checkLogin(true);
     if(r.isOk()) {
@@ -39,13 +49,6 @@ export default defineComponent({
 
     } else {
       this.error = r.unwrapErr();
-    }
-  },
-  data(): Data {
-    return {
-      error: null,
-      isAdmin: false,
-      loginOk: false,
     }
   },
   methods: {

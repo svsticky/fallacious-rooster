@@ -1,5 +1,6 @@
 {
-  "name": "subman",
+  "name": "fallacious-rooster",
+  "type": "module",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -19,13 +20,17 @@
   },
   "devDependencies": {
     "@babel/types": "^7.21.4",
+    "@eslint/js": "^9.9.1",
     "@types/node": "^18.15.0",
+    "@typescript-eslint/eslint-plugin": "^8.4.0",
+    "@typescript-eslint/parser": "^8.4.0",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/eslint-config-typescript": "^11.0.0",
-    "eslint": "^8.22.0",
-    "eslint-plugin-vue": "^9.3.0",
+    "eslint": "^9.9.1",
+    "eslint-plugin-vue": "^9.28.0",
     "sass": "^1.60.0",
     "typescript": "^5.0.0",
+    "typescript-eslint": "^8.4.0",
     "unplugin-fonts": "^1.0.3",
     "vite": "^4.2.0",
     "vite-plugin-vuetify": "^1.0.0",
