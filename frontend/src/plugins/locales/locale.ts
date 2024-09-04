@@ -9,6 +9,15 @@ export interface Locale {
       title: string;
       subtitle: string;
       message: string;
+      toBoard: string;
+      toAdvisors: string;
+      selectAdvisors: string;
+      contactEmail: string;
+      contactEmailExplanation: string;
+      submit: string;
+      required: string;
+      invalidEmail: string;
+      invalid: string;
     }
   }
 }

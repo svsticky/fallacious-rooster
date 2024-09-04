@@ -10,7 +10,16 @@ const NL: Locale = {
     form: {
       title: "Melding",
       subtitle: "Maak hieronder je melding",
-      message: "Jouw melding"
+      message: "Jouw melding",
+      invalid: "Een of meerdere velden zijn niet correct ingevuld",
+      invalidEmail: "Het opgegeven email adres is ongeldig",
+      required: "Vereist",
+      submit: "Verstuur",
+      toAdvisors: "Wil je dat jouw bericht naar de vertrouwenscontactpersonen wordt verstuurd? Zo ja, selecteer welke",
+      toBoard: "Wil je dat jouw bericht naar het bestuur wordt verstuurd?",
+      selectAdvisors: "Selecteer vertrouwenscontactpersonen",
+      contactEmail: "Email adres",
+      contactEmailExplanation: "Wil je dat we contact met je kunnen opgeven? Zo ja, geef hier dan het email adres op waarop we jou mogen bereiken"
     }
   }
 }

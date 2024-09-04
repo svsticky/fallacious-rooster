@@ -11,7 +11,7 @@ pub struct ReportRequest {
     to_board: bool,
     to_confidential_advisors: Vec<String>,
     message: String,
-    want_contact: bool,
+    contact_address: Option<String>,
 }
 
 pub async fn report(
@@ -40,8 +40,7 @@ pub async fn report(
 
     let template = ReportTemplate {
         message: payload.message,
-        full_name: payload.want_contact.then(|| auth.full_name),
-        want_contact: payload.want_contact,
+        contact_address: payload.contact_address
     };
 
     // Send to confidential advisors if needed

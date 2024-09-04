@@ -5,13 +5,13 @@
   },
   "koala": {
     "koala_host": "http://koala.rails.local:3000",
-    "client_id": "xgLEH0B_x0NKUhW0nsQBF-eaFSlA-6q-2j6feqrSmcQ",
-    "client_secret": "ZM_sGeJnQ4Sc4nGscJYWZ2CVAuRMg1vRU5uC0T7wGnc",
+    "client_id": "ekR5VeienHUzrwLbxs29-ct8gxCd6wZlsVTqwsbVpD4",
+    "client_secret": "5jbSuCTHw3jrnD40DynCgR9mCQg7-viYCInhOdb9q5M",
     "redirect_uri": "http://flutter.localhost:8080/api/oauth/callback"
   },
   "email": {
     "from_email": "anoniem@svsticky.nl",
-    "from_name": "SVSticky Anoniem Meldpunt",
+    "from_name": "Studievereniging Sticky Anoniem Meldpunt",
     "smtp_relay": "smtp-relay.gmail.com"
   },
   "frontend": {

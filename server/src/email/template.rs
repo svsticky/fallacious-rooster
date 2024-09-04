@@ -8,8 +8,7 @@ pub const TEMPLATE_CONFIDENTIAL_ADVISORS: &str =
 #[derive(Serialize)]
 pub struct ReportTemplate {
     pub message: String,
-    pub full_name: Option<String>,
-    pub want_contact: bool,
+    pub contact_address: Option<String>,
 }
 
 fn render(template: &str, data: &ReportTemplate) -> Result<String, RenderError> {

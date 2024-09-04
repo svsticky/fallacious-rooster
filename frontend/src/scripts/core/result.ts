@@ -9,12 +9,12 @@ export class Result<T, E> {
     this.err = err;
   }
 
-  public static ok(ok: T): Result<T, E> {
-    return new Result<T, E>(ResultState.OK, ok, null);
+  public static ok<T, E>(ok: T): Result<T, E> {
+    return new Result<T, E>(ResultState.OK, ok, undefined);
   }
 
-  public static err(err: E): Result<T, E> {
-    return new Result<T, E>(ResultState.ERROR, null, err);
+  public static err<T, E>(err: E): Result<T, E> {
+    return new Result<T, E>(ResultState.ERROR, undefined, err);
   }
 
   public isOk(): boolean {
@@ -31,7 +31,7 @@ export class Result<T, E> {
     }
 
     console.error("Tried to unwrap Result while it was an error");
-    return undefined;
+    return undefined!;
   }
 
   public unwrapErr(): E {
@@ -40,7 +40,7 @@ export class Result<T, E> {
     }
 
     console.error("Tried to unwrap error Result while it was ok");
-    return undefined;
+    return undefined!;
   }
 
   public map<T1>(f: (t: T) => T1): Result<T1, E> {
@@ -51,7 +51,7 @@ export class Result<T, E> {
     }
   }
 
-  public async map1<T1>(f: (t: T) => T1): Promise<Result<T1, E>> {
+  public async map1<T1>(f: (t: T) => Promise<T1>): Promise<Result<T1, E>> {
     if (this.isOk()) {
       return Result.ok(await f(this.unwrap()));
     } else {

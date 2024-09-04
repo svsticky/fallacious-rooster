@@ -5,7 +5,9 @@ import App from './App.vue'
 export const server = "http://flutter.localhost:8080";
 
 // Vuetify missing type
-export type RuleFn = (v: string) => string | boolean;
+export type InputValidationRule = (v: string) => string | boolean;
+export type InputValidationRules = InputValidationRule[];
+
 export type DataTableHeader = { title: string, value: string }
 /**
  * The item you get when you click a row

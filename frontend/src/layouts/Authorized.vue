@@ -18,7 +18,7 @@
 <script lang="ts">
 
 import {OAuth2Client} from "@/scripts/oauth2";
-import {ApiError} from "@/scripts/error";
+import {ApiError} from "@/scripts/core/error";
 import {defineComponent} from "vue";
 import View from "./components/View.vue";
 import AppBar from "./components/AppBar.vue";

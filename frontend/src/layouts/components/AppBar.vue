@@ -1,8 +1,8 @@
 <template>
-  <v-app-bar elevation="1">
+  <v-app-bar elevation="1" color="primary">
     <v-app-bar-title>
       <v-avatar>
-        <v-img src="https://public.svsticky.nl/logos/hoofd_outline_kleur.svg" alt="sticky-logo" />
+        <v-img src="https://public.svsticky.nl/logos/hoofd_outline_wit.svg" alt="sticky-logo" />
       </v-avatar>
       {{ $t('site_title') }}
     </v-app-bar-title>

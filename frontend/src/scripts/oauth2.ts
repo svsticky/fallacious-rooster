@@ -1,6 +1,7 @@
 import {server} from "@/main";
-import {ApiError} from "@/scripts/error";
-import {fetch1} from "@/scripts/fetch1";
+import {ApiError} from "@/scripts/core/error";
+import {fetch1} from "@/scripts/core/fetch1";
+import {Result} from "@/scripts/core/result";
 
 export class OAuth2Client {
   static async ok(): Promise<Result<boolean, ApiError>> {
