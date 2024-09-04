@@ -109,8 +109,7 @@ fn get_token(req: &HttpRequest) -> Option<String> {
 fn header(req: &HttpRequest, name: &str) -> Option<String> {
     req.headers()
         .get(name)
-        .map(|hv| hv.to_str().ok())
-        .flatten()
+        .and_then(|hv| hv.to_str().ok())
         .map(|v| v.to_string())
 }
 

@@ -56,5 +56,5 @@ pub async fn send_report(
 }
 
 fn get_ehlo_domain(email: &str) -> Option<String> {
-    email.split("@").nth(1).map(|domain| domain.to_string())
+    email.split('@').nth(1).map(|domain| domain.to_string())
 }

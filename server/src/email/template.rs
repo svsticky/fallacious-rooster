@@ -18,7 +18,7 @@ fn render(template: &str, data: &ReportTemplate) -> Result<String, RenderError> 
     #[cfg(debug_assertions)]
     hb.set_dev_mode(true);
 
-    Ok(hb.render_template(template, data)?)
+    hb.render_template(template, data)
 }
 
 pub fn render_report_board(data: &ReportTemplate) -> Result<String, RenderError> {

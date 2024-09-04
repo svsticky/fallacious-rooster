@@ -11,7 +11,7 @@ pub enum Error {
     #[error("Failed to render email body: {0}")]
     TemplateRender(#[from] handlebars::RenderError),
     #[error("File error: {0}")]
-    DataFileError(#[from] crate::file::DataFileError),
+    DataFile(#[from] crate::file::DataFileError),
     #[error("Advisor already exists")]
     AdvisorAlreadyExists,
     #[error("Advisor does not exist")]
@@ -27,7 +27,7 @@ impl ResponseError for Error {
         match self {
             Self::Email(_) => StatusCode::INTERNAL_SERVER_ERROR,
             Self::TemplateRender(_) => StatusCode::INTERNAL_SERVER_ERROR,
-            Self::DataFileError(_) => StatusCode::INTERNAL_SERVER_ERROR,
+            Self::DataFile(_) => StatusCode::INTERNAL_SERVER_ERROR,
             Self::AdvisorAlreadyExists => StatusCode::CONFLICT,
             Self::AdvisorDoesNotExist => StatusCode::BAD_REQUEST,
             Self::Internal => StatusCode::INTERNAL_SERVER_ERROR,

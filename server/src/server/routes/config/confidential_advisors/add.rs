@@ -21,8 +21,7 @@ pub async fn add(
     if storage
         .confidential_advisors
         .iter()
-        .find(|adv| adv.email.eq(&payload.email))
-        .is_some()
+        .any(|adv| adv.email.eq(&payload.email))
     {
         return Err(Error::AdvisorAlreadyExists);
     }

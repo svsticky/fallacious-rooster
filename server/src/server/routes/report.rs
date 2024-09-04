@@ -31,8 +31,7 @@ pub async fn report(
         storage
             .confidential_advisors
             .iter()
-            .find(|adv| adv.email.eq(advisor))
-            .is_some()
+            .any(|adv| adv.email.eq(advisor))
     });
 
     if !advisors_exist {

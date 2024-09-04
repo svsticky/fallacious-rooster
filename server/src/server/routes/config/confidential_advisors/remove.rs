@@ -17,11 +17,10 @@ pub async fn remove(
 ) -> WResult<Empty> {
     let mut storage = storage.0.write().await;
 
-    if storage
+    if !storage
         .confidential_advisors
         .iter()
-        .find(|adv| adv.email.eq(&payload.email))
-        .is_none()
+        .any(|adv| adv.email.eq(&payload.email))
     {
         return Err(Error::AdvisorDoesNotExist);
     }
