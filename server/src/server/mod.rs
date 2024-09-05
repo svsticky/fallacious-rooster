@@ -18,6 +18,7 @@ pub async fn run_server(
     let port = config.server.port;
 
     let storage = WStorage::new(MutAppStorage(RwLock::new(storage)));
+    let host = config.server.domain.clone();
     HttpServer::new(move || {
         App::new()
             .wrap(Cors::permissive())
@@ -28,6 +29,7 @@ pub async fn run_server(
             .configure(routes::Router::configure)
     })
     .bind(format!("0.0.0.0:{port}"))?
+    .server_hostname(&host)
     .run()
     .await?;
 

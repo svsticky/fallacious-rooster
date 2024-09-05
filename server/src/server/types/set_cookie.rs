@@ -1,4 +1,4 @@
-use actix_web::cookie::Cookie;
+use actix_web::cookie::{Cookie, Expiration, SameSite};
 use actix_web::{HttpRequest, HttpResponse, Responder};
 
 pub struct SetCookie<T: Responder> {
@@ -24,8 +24,17 @@ impl<T: Responder> Responder for SetCookie<T> {
         let mut response = self.inner.respond_to(req);
         let mut cookie = Cookie::new(self.cookie_name, self.cookie_value);
         cookie.set_path("/");
-        response.add_cookie(&cookie).unwrap();
+        cookie.set_http_only(true);
+        cookie.set_expires(Expiration::Session);
 
+        if cfg!(debug_assertions) {
+            cookie.set_same_site(Some(SameSite::Lax));
+        } else {
+            cookie.set_same_site(Some(SameSite::None));
+            cookie.set_secure(false);
+        }
+
+        response.add_cookie(&cookie).unwrap();
         response
     }
 }

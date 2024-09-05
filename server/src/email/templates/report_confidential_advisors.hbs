@@ -1,0 +1,51 @@
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oxygen&display=swap" rel="stylesheet">
+    <title>Sticky Anonymous Report</title>
+</head>
+<style>
+    .container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    p {
+        font-family: 'Oxygen', sans-serif;
+    }
+
+    .banner {
+        background-color: #197052;
+        color: white;
+        padding: 8px
+    }
+</style>
+<body>
+<div class="container">
+    <div class="content">
+        <h1 class="banner">New anonymous report</h1>
+
+        <p>
+            Hi,<br/>
+            <br/>
+            A new report has been submitted and sent to the confidential advisor.
+        <h3>Message</h3>
+        {{ message }}
+
+        <h3>Contact</h3>
+        {{#if contact_address }}
+            The user has given the following email address if you want to contact them: {{ contact_address }}.
+        {{else}}
+            The user has not given a contact address.
+        {{/if}}
+        <br/>
+        <br/>
+        Thanks,<br/>
+        Sticky
+        </p>
+    </div>
+</div>
+</body>
+</html>

@@ -21,6 +21,7 @@ pub struct FrontendConfig {
 pub struct ServerConfig {
     #[serde(default = "default_port")]
     pub port: u16,
+    pub domain: String,
 }
 
 #[derive(Debug, Default, Clone, Deserialize, Serialize)]
@@ -48,6 +49,7 @@ impl Default for ServerConfig {
     fn default() -> Self {
         Self {
             port: default_port(),
+            domain: String::default(),
         }
     }
 }

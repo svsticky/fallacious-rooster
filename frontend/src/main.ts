@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import { registerPlugins } from '@/plugins'
 import App from './App.vue'
 
-export const server = "http://flutter.localhost:8080";
+export const server = "http://fallacious-rooster.local:8080";
 
 // Vuetify missing type
 export type InputValidationRule = (v: string) => string | boolean;

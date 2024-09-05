@@ -4,9 +4,22 @@ import {ApiError} from "@/scripts/core/error";
 export async function fetch1(input: RequestInfo | URL, init?: RequestInit): Promise<Result<Response, ApiError>> {
   if (init) {
     init.credentials = "include";
+    if (init.headers) {
+      init.headers = {
+        ...init.headers,
+        'Access-Control-Allow-Credentials': "true",
+      }
+    } else {
+      init.headers = {
+        'Access-Control-Allow-Credentials': "true",
+      };
+    }
   } else {
     init = {
-      credentials: "include"
+      credentials: "include",
+      headers: {
+        'Access-Control-Allow-Credentials': "true",
+      },
     };
   }
 

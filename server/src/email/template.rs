@@ -1,9 +1,9 @@
 use handlebars::{Handlebars, RenderError};
 use serde::Serialize;
 
-pub const TEMPLATE_REPORT_BOARD: &str = include_str!("./templates/report_board.handlebars");
+pub const TEMPLATE_REPORT_BOARD: &str = include_str!("templates/report_board.hbs");
 pub const TEMPLATE_CONFIDENTIAL_ADVISORS: &str =
-    include_str!("./templates/report_confidential_advisors.handlebars");
+    include_str!("templates/report_confidential_advisors.hbs");
 
 #[derive(Serialize)]
 pub struct ReportTemplate {

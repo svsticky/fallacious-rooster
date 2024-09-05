@@ -1,13 +1,13 @@
 {
   "server": {
     "port": 8080,
-    "domain": "fallacious-rooster.localhost:8080"
+    "domain": "fallacious-rooster.local:8080"
   },
   "koala": {
     "koala_host": "http://koala.rails.local:3000",
     "client_id": "",
     "client_secret": "",
-    "redirect_uri": "http://fallacious-rooster.localhost:8080/api/oauth/callback"
+    "redirect_uri": "http://fallacious-rooster.local:8080/api/oauth/callback"
   },
   "email": {
     "from_email": "anoniem@svsticky.nl",
@@ -15,8 +15,8 @@
     "smtp_relay": "smtp-relay.gmail.com"
   },
   "frontend": {
-    "home_page_url": "http://fallacious-rooster.localhost:3001/",
-    "domain": "fallacious-rooster.localhost:3001"
+    "home_page_url": "http://fallacious-rooster.local:3001/",
+    "domain": "fallacious-rooster.local:3001"
   },
   "local_storage": "./storage.json"
 }

@@ -28,7 +28,7 @@ impl Responder for Redirect {
     type Body = BoxBody;
 
     fn respond_to(self, _: &HttpRequest) -> HttpResponse<Self::Body> {
-        let mut builder = HttpResponse::TemporaryRedirect();
+        let mut builder = HttpResponse::Found();
         builder.append_header((
             HeaderName::from_static("location"),
             HeaderValue::from_str(&self.to).unwrap(),
