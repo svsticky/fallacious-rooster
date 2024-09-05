@@ -10,9 +10,9 @@ export interface Locale {
       title: string;
       subtitle: string;
       message: string;
-      toBoard: string;
-      toAdvisors: string;
-      selectAdvisors: string;
+      toReceivers: string;
+      selectReceivers: string;
+      allowContact: string;
       contactEmail: string;
       contactEmailExplanation: string;
       submit: string;
@@ -20,6 +20,7 @@ export interface Locale {
       invalidEmail: string;
       invalid: string;
       selectRecipient: string;
+      board: string;
     },
     success: string;
   }

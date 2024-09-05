@@ -1,23 +1,19 @@
 <template>
   <v-container>
-    <v-alert
-      v-if="error != null"
-      class="mt-2"
-      icon="mdi-alert-circle-outline"
-      title="Error"
+    <MaterialBanner
       :text="error"
+      icon="mdi-alert-circle-outline"
       type="error"
-      @click:close="error = null"
+      title="Error"
+      @close="error = null"
     />
 
-    <v-alert
-      v-if="success != null"
-      class="mt-2"
-      icon="mdi-send-check"
+    <MaterialBanner
       title="Success"
       :text="success"
       type="success"
-      @click:close="success = null"
+      icon="mdi-send-check"
+      @close="success = null"
     />
 
     <v-card>
@@ -44,28 +40,14 @@
           <v-row align="center">
             <v-col>
               <p class="mb-2">
-                {{ $t('home.form.toBoard') }}
-              </p>
-            </v-col>
-            <v-col>
-              <v-checkbox
-                v-model="report.toBoard"
-                color="primary"
-              />
-            </v-col>
-          </v-row>
-
-          <v-row align="center">
-            <v-col>
-              <p class="mb-2">
-                {{ $t('home.form.toAdvisors') }}:
+                {{ $t('home.form.toReceivers') }}:
               </p>
             </v-col>
             <v-col>
               <v-select
-                v-model="report.toAdvisors"
-                :label="$t('home.form.selectAdvisors')"
-                :items="advisors"
+                v-model="report.toReceivers"
+                :label="$t('home.form.selectReceivers')"
+                :items="receivers"
                 return-object
                 multiple
                 color="primary"
@@ -75,6 +57,23 @@
           </v-row>
 
           <v-row align="center">
+            <v-col>
+              <p class="mb-2">
+                {{ $t('home.form.allowContact') }}
+              </p>
+            </v-col>
+            <v-col>
+              <v-checkbox
+                v-model="report.allowContact"
+                color="primary"
+              />
+            </v-col>
+          </v-row>
+
+          <v-row
+            v-if="report.allowContact"
+            align="center"
+          >
             <v-col>
               <p class="mb-2">
                 {{ $t('home.form.contactEmailExplanation') }}:
@@ -112,6 +111,7 @@ import {defineComponent} from "vue";
 import {ConfidentialAdvisor} from "@/scripts/config";
 import {InputValidationRules} from "@/main";
 import {Report} from "@/scripts/report"
+import MaterialBanner from "@/views/components/MaterialBanner.vue"
 
 interface Data {
   error: string | null,
@@ -119,19 +119,41 @@ interface Data {
   report: {
     valid: boolean,
     message: string | null,
-    toBoard: boolean,
-    toAdvisors: ConfidentialAdvisor[],
+    toReceivers: Receiver[],
+    allowContact: boolean,
     contactEmail: string | null,
     loading: boolean,
   },
-  advisors: ConfidentialAdvisor[],
+  receivers: Receiver[],
   rules: {
     required: InputValidationRules,
     optionalEmail: InputValidationRules,
   }
 }
 
+export class Receiver {
+  name: string;
+  inner: BoardReceiver | AdvisorReceiver;
+  receiverType: ReceiverType;
+
+  constructor(name: string, inner: BoardReceiver | AdvisorReceiver, receiverType: ReceiverType) {
+    this.name = name;
+    this.inner = inner;
+    this.receiverType = receiverType;
+  }
+}
+
+enum ReceiverType {
+  BOARD,
+  ADVISOR
+}
+
+class BoardReceiver {}
+
+class AdvisorReceiver extends ConfidentialAdvisor {}
+
 export default defineComponent({
+  components: {MaterialBanner},
   data(): Data {
     return {
       error: null,
@@ -139,12 +161,12 @@ export default defineComponent({
       report: {
         valid: true,
         message: null,
-        toBoard: false,
-        toAdvisors: [],
+        toReceivers: [],
+        allowContact: false,
         contactEmail: null,
         loading: false,
       },
-      advisors: [],
+      receivers: [],
       rules: {
         required: [
           v => !!v || this.$t("home.form.required")
@@ -166,7 +188,8 @@ export default defineComponent({
         return;
       }
 
-      this.advisors = r.unwrap();
+      this.receivers = r.unwrap().map(advisor => new Receiver(advisor.name, advisor, ReceiverType.ADVISOR));
+      this.receivers.push(new Receiver(this.$t('home.form.board'), new BoardReceiver(), ReceiverType.BOARD));
     },
     async submitForm() {
       if(!this.report.valid) {
@@ -174,13 +197,20 @@ export default defineComponent({
         return;
       }
 
-      if(this.report.toAdvisors.length == 0 && !this.report.toBoard) {
+      if(this.report.toReceivers.length == 0) {
         this.error = this.$t("home.form.selectRecipient");
         return;
       }
 
+      const toAdvisors = this.report.toReceivers
+        .filter(v => v.receiverType == ReceiverType.ADVISOR)
+        .map(v => v.inner);
+      const toBoard = this.report.toReceivers
+        .filter(v => v.receiverType == ReceiverType.BOARD)
+        .length > 0;
+
       this.report.loading = true;
-      const r = await Report.report(this.report.message!, this.report.toBoard, this.report.toAdvisors, this.report.contactEmail);
+      const r = await Report.report(this.report.message!, toBoard, toAdvisors, this.report.contactEmail);
       this.report.loading = false;
 
       if(r.isErr()) {

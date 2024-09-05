@@ -1,12 +1,12 @@
 <template>
   <v-app>
     <v-main v-if="error != null">
-      <v-alert
-        v-if="error != null"
-        icon="mdi-alert-circle-outline"
-        title="Login failed"
+      <MaterialBanner
         :text="error"
+        icon="mdi-alert-circle-outline"
         type="error"
+        title="Login"
+        @close="error = null"
       />
     </v-main>
 
@@ -24,6 +24,7 @@ import {defineComponent} from "vue";
 import RouterView from "./components/RouterView.vue";
 import AppBar from "./components/AppBar.vue";
 import {checkLogin} from "@/layouts/authorized";
+import MaterialBanner from "@/views/components/MaterialBanner.vue";
 
 interface Data {
   error: string | null,
@@ -32,7 +33,7 @@ interface Data {
 }
 
 export default defineComponent({
-  components: {AppBar, RouterView},
+  components: {MaterialBanner, AppBar, RouterView},
   data(): Data {
     return {
       error: null,
