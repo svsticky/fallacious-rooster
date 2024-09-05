@@ -6,24 +6,24 @@ const NL: Locale = {
   home: {
     welcome: {
       title: "Welkom bij het anonieme meldpunt van Sticky",
-      subtitle: "Je kunt hier volledig annoniem een melding maken van ongewenst (sexueel) wangedrag. Je kunt deze melding maken bij het bestuur of bij de vertrouwenscontactpersonen, dat is aan jou. Ook kun je er voor kiezen dat we contact met je mogen opnemen, uiteraard is dit niet verplicht."
+      subtitle: "Je kunt hier volledig annoniem een melding maken van ongewenst gedrag en sexueel wangedrag. Je kunt deze melding versturen aan het bestuur of (een van de) vertrouwenscontactpersonen, dat is aan jou. Ook kun je er voor kiezen dat er contact met je mogen worden opgenomen als je graag terugkoppeling wilt, uiteraard is dit niet verplicht."
     },
     form: {
-      title: "Melding",
-      subtitle: "Maak hieronder je melding",
-      message: "Jouw melding",
+      title: "Omschrijving van je melding",
+      subtitle: "Berschrijf hieronder de ervaring die je hebt gehad of de melding die je wilt maken. Dit mag met of zonder expliciete namen en zo uitgebreid als je wilt.",
+      message: "Beschrijf hier je ervaring of je melding",
       invalid: "Een of meerdere velden zijn niet correct ingevuld",
       invalidEmail: "Het opgegeven email adres is ongeldig",
       required: "Vereist",
-      submit: "Verstuur",
+      submit: "Melding versturen",
       toAdvisors: "Wil je dat jouw bericht naar de vertrouwenscontactpersonen wordt verstuurd? Zo ja, selecteer welke",
       toBoard: "Wil je dat jouw bericht naar het bestuur wordt verstuurd?",
       selectAdvisors: "Selecteer vertrouwenscontactpersonen",
       contactEmail: "Email adres",
-      contactEmailExplanation: "Wil je dat we contact met je kunnen opgeven? Zo ja, geef hier dan het email adres op waarop we jou mogen bereiken. Uiteraard is dit niet verplicht",
-      selectRecipient: "Selecteer minstens een ontvanger voor je melding"
+      contactEmailExplanation: "Wil je dat er contact met je wordt opgenomen naar aanleiding van je melding? Zo ja, geef hier een email adres waarop je de terugkoppeling wilt ontvangen. Laat het veld leeg als je de melding volledig anoniem wilt houden",
+      selectRecipient: "Je melding heeft ten minste één ontvanger nodig."
     },
-    success: "Je bericht is verzonden!"
+    success: "Je melding is verzonden en wordt in behandeling genomen"
   }
 }
 
