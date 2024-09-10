@@ -5,7 +5,7 @@
     :icon="icon"
     :title="title"
     :text="text"
-    :type="type"
+    :type="type1"
     @click:close="$emit('close')"
   />
 </template>
@@ -37,6 +37,11 @@ export default defineComponent({
   emits: [
     'close'
   ],
+  computed: {
+    type1(): 'info' | 'warning' | 'error' | 'success' | undefined {
+      return this.type as 'info' | 'warning' | 'error' | 'success' | undefined;
+    }
+  },
   watch: {
     text(val?: string) {
       if(val) {

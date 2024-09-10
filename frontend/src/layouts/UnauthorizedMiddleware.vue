@@ -35,7 +35,6 @@ export default defineComponent({
     data(): Data {
         return {
           error: null,
-          loginOk: false,
           isAdmin: false,
         }
     },
@@ -43,7 +42,6 @@ export default defineComponent({
         const r = await checkLogin();
         if(r.isOk()) {
           const loginState = r.unwrap();
-          this.loginOk = loginState.ok;
           this.isAdmin = loginState.isAdmin;
 
         } else {

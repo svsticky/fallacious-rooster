@@ -28,7 +28,8 @@ export default [
       'babel.config.js',
       'vue.config.js',
       'vite.config.ts',
-      'src/vite-end.d.ts'
+      'src/vite-end.d.ts',
+      "dist/**"
     ],
   }
 ];

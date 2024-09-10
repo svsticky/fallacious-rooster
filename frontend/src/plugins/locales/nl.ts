@@ -10,7 +10,7 @@ const NL: Locale = {
     },
     form: {
       title: "Omschrijving van je melding",
-      subtitle: "Berschrijf hieronder de ervaring die je hebt gehad of de melding die je wilt maken. Dit mag met of zonder expliciete namen en zo uitgebreid als je wilt.",
+      subtitle: "Beschrijf hieronder de ervaring die je hebt gehad of de melding die je wilt maken. Dit mag met of zonder expliciete namen en zo uitgebreid als je wilt.",
       message: "Beschrijf hier je ervaring of je melding",
       invalid: "Een of meerdere velden zijn niet correct ingevuld",
       invalidEmail: "Het opgegeven email adres is ongeldig",

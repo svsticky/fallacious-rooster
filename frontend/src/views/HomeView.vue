@@ -5,7 +5,7 @@
       icon="mdi-alert-circle-outline"
       type="error"
       title="Error"
-      @close="error = null"
+      @close="error = undefined"
     />
 
     <MaterialBanner
@@ -13,7 +13,7 @@
       :text="success"
       type="success"
       icon="mdi-send-check"
-      @close="success = null"
+      @close="success = undefined"
     />
 
     <v-card>
@@ -114,8 +114,8 @@ import {Report} from "@/scripts/report"
 import MaterialBanner from "@/views/components/MaterialBanner.vue"
 
 interface Data {
-  error: string | null,
-  success: string | null,
+  error: string | undefined,
+  success: string | undefined,
   report: {
     valid: boolean,
     message: string | null,
@@ -156,8 +156,8 @@ export default defineComponent({
   components: {MaterialBanner},
   data(): Data {
     return {
-      error: null,
-      success: null,
+      error: undefined,
+      success: undefined,
       report: {
         valid: true,
         message: null,
@@ -202,9 +202,9 @@ export default defineComponent({
         return;
       }
 
-      const toAdvisors = this.report.toReceivers
+      const toAdvisors: AdvisorReceiver[] = this.report.toReceivers
         .filter(v => v.receiverType == ReceiverType.ADVISOR)
-        .map(v => v.inner);
+        .map(v => v.inner) as AdvisorReceiver[];
       const toBoard = this.report.toReceivers
         .filter(v => v.receiverType == ReceiverType.BOARD)
         .length > 0;

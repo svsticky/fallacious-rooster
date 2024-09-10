@@ -54,7 +54,7 @@ export default defineComponent({
     return {
       locales: [
         { icon: "https://flagicons.lipis.dev/flags/4x3/nl.svg", locale: "nl" },
-        { icon: "https://flagicons.lipis.dev/flags/4x3/gb.svg", locale: "en" },
+        { icon: "https://flagicons.lipis.dev/flags/4x3/gb.svg", locale: "en-US" },
       ]
     }
   },
