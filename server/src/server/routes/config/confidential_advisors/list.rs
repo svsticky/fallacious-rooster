@@ -13,7 +13,7 @@ pub struct Advisor {
     email: String,
 }
 
-pub async fn list(_: Authorization<true>, storage: WStorage) -> WResult<web::Json<ListResponse>> {
+pub async fn list(_: Authorization, storage: WStorage) -> WResult<web::Json<ListResponse>> {
     Ok(web::Json(ListResponse {
         advisors: storage
             .0

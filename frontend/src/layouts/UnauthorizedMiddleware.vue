@@ -11,10 +11,9 @@
     </v-main>
 
     <AppBar
-      v-if="loginOk"
       :is-admin="isAdmin"
     />
-    <RouterView v-if="loginOk" />
+    <RouterView />
   </v-app>
 </template>
 
@@ -28,7 +27,6 @@ import MaterialBanner from "@/views/components/MaterialBanner.vue";
 
 interface Data {
   error: string | null,
-  loginOk: boolean,
   isAdmin: boolean,
 }
 
@@ -49,11 +47,8 @@ export default defineComponent({
           this.isAdmin = loginState.isAdmin;
 
         } else {
-          this.error = r.unwrapErr();
+          this.isAdmin = false;
         }
     },
-    methods: {
-
-    }
 })
 </script>

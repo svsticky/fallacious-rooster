@@ -3,7 +3,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    component: () => import('@/layouts/AuthorizedMiddleware.vue'),
+    component: () => import('@/layouts/UnauthorizedMiddleware.vue'),
     children: [
       {
         path: '',

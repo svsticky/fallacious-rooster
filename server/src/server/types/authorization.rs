@@ -6,7 +6,6 @@ use cabbage::oauth::ClientConfig;
 use cabbage::KoalaApi;
 use std::future::Future;
 use std::pin::Pin;
-use std::str::FromStr;
 use thiserror::Error;
 
 pub struct Authorization<const ADMIN: bool = false> {
@@ -36,9 +35,9 @@ impl<const ADMIN: bool> FromRequest for Authorization<ADMIN> {
     fn from_request(req: &HttpRequest, _: &mut Payload) -> Self::Future {
         let req = req.clone();
         Box::pin(async move {
-            #[cfg(debug_assertions)]
-            if is_debug_allow_unauthorized(&req) {
-                return Ok(Self { is_admin: true });
+            if !Self::ADMIN {
+                // We do not want authorization where admin rights aren't needed
+                return Ok(Self { is_admin: false });
             }
 
             let token = match get_token(&req) {
@@ -73,19 +72,6 @@ impl<const ADMIN: bool> FromRequest for Authorization<ADMIN> {
                 is_admin: userinfo.is_admin,
             })
         })
-    }
-}
-
-/// Check if the `X-DebugAllowUnauthorized` header is present.
-/// This is useful when working on the UI using the native Linux application,
-/// which doesn't support browser redirects (obviously).
-///
-/// During devlopment ACL can be ignored this way.
-#[cfg(debug_assertions)]
-fn is_debug_allow_unauthorized(req: &HttpRequest) -> bool {
-    match header(req, "X-DebugAllowUnauthorized") {
-        Some(hv) => bool::from_str(&hv).unwrap_or(false),
-        None => false,
     }
 }
 

@@ -7,6 +7,16 @@ Even though login is required, the application takes upmost care to ensure user 
 
 The original idea for this application was put forward in [the policy of the 10th KKB on the kbALV on 2024-05-21, section 2.2](https://files.svsticky.nl/alv_stukken/2024_05_21_kbALV/Beleidsplan%2010e%20KKB.pdf). 
 
+## CI
+Easily run CI locally with Make:
+```bash
+make
+```
+See all commands with:
+```bash
+make help
+```
+
 ## Development 
 The guide below will tell you roughly how to get started with working on fallacious-rooster.
 
