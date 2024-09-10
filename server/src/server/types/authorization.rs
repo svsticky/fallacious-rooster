@@ -35,14 +35,17 @@ impl<const ADMIN: bool> FromRequest for Authorization<ADMIN> {
     fn from_request(req: &HttpRequest, _: &mut Payload) -> Self::Future {
         let req = req.clone();
         Box::pin(async move {
-            if !Self::ADMIN {
-                // We do not want authorization where admin rights aren't needed
-                return Ok(Self { is_admin: false });
-            }
-
             let token = match get_token(&req) {
                 Some(token) => token,
-                None => return Err(AuthorizationError::NoToken),
+                None => {
+                    return if Self::ADMIN {
+                        Err(AuthorizationError::NoToken)
+                    } else {
+                        Ok(Self {
+                            is_admin: false,
+                        })
+                    }
+                },
             };
 
             let config: &WConfig = req.app_data().unwrap();
@@ -58,8 +61,24 @@ impl<const ADMIN: bool> FromRequest for Authorization<ADMIN> {
                 Ok(userinfo) => userinfo,
                 Err(e) => {
                     return match e.status() {
-                        Some(StatusCode::UNAUTHORIZED) => Err(AuthorizationError::NoToken),
-                        _ => Err(AuthorizationError::Koala),
+                        Some(StatusCode::UNAUTHORIZED) => {
+                            if Self::ADMIN {
+                                Err(AuthorizationError::NoToken)
+                            } else {
+                                Ok(Self {
+                                    is_admin: false,
+                                })
+                            }
+                        },
+                        _ => {
+                            if Self::ADMIN {
+                                Err(AuthorizationError::Koala)
+                            } else {
+                                Ok(Self {
+                                    is_admin: false,
+                                })
+                            }
+                        },
                     }
                 }
             };

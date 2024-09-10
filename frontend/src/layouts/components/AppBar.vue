@@ -37,7 +37,6 @@
     </v-menu>
 
     <v-btn
-      v-if="isAdmin"
       icon="mdi-cog"
       to="/admin/settings"
     />
