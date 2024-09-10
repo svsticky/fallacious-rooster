@@ -37,10 +37,16 @@ pub trait DataFile: Default + Serialize + DeserializeOwned {
         }
 
         let mut f = fs::File::open(from).await?;
-        let mut buf = Vec::new();
-        f.read_to_end(&mut buf).await?;
+        let mut buf = String::new();
+        f.read_to_string(&mut buf).await?;
 
-        Ok(serde_json::from_slice(&buf)?)
+        // Remove comments, e.g. 'Ansible Managed'
+        let buf = buf
+            .lines()
+            .filter(|v| !v.starts_with("#"))
+            .collect::<String>();
+
+        Ok(serde_json::from_str(&buf)?)
     }
 
     async fn try_write_new<P: AsRef<Path>>(to: P) -> Result<(), DataFileError> {

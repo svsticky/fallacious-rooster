@@ -41,11 +41,9 @@ impl<const ADMIN: bool> FromRequest for Authorization<ADMIN> {
                     return if Self::ADMIN {
                         Err(AuthorizationError::NoToken)
                     } else {
-                        Ok(Self {
-                            is_admin: false,
-                        })
+                        Ok(Self { is_admin: false })
                     }
-                },
+                }
             };
 
             let config: &WConfig = req.app_data().unwrap();
@@ -65,20 +63,16 @@ impl<const ADMIN: bool> FromRequest for Authorization<ADMIN> {
                             if Self::ADMIN {
                                 Err(AuthorizationError::NoToken)
                             } else {
-                                Ok(Self {
-                                    is_admin: false,
-                                })
+                                Ok(Self { is_admin: false })
                             }
-                        },
+                        }
                         _ => {
                             if Self::ADMIN {
                                 Err(AuthorizationError::Koala)
                             } else {
-                                Ok(Self {
-                                    is_admin: false,
-                                })
+                                Ok(Self { is_admin: false })
                             }
-                        },
+                        }
                     }
                 }
             };
