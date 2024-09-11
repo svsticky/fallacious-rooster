@@ -10,7 +10,10 @@
           alt="sticky-logo"
         />
       </v-avatar>
-      {{ $t('site_title') }}
+
+      <span class="hidden-sm-and-down">
+        {{ $t('site_title') }}
+      </span>
     </v-app-bar-title>
 
     <v-spacer />

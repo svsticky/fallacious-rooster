@@ -17,7 +17,9 @@
     />
 
     <v-card>
-      <v-card-title>{{ $t('home.welcome.title') }} </v-card-title>
+      <v-card-title style="white-space: normal;">
+        {{ $t('home.welcome.title') }}
+      </v-card-title>
       <v-card-text>
         <p>{{ $t('home.welcome.subtitle') }} </p>
 
@@ -29,13 +31,20 @@
         <v-form v-model="report.valid">
           <v-textarea
             v-model="report.message"
+            style="white-space: normal;"
             :label="$t('home.form.message')"
             auto-grow
             :rules="rules.required"
             rows="5"
             validate-on="blur"
             color="primary"
-          />
+          >
+            <template #label="{ label }">
+              <div style="white-space: normal;">
+                {{ label }}
+              </div>
+            </template>
+          </v-textarea>
 
           <v-row align="center">
             <v-col>
