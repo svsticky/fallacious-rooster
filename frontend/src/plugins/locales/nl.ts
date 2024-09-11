@@ -6,7 +6,7 @@ const NL: Locale = {
   home: {
     welcome: {
       title: "Welkom bij het anonieme meldpunt van Sticky",
-      subtitle: "Je kunt hier volledig annoniem een melding maken van ongewenst gedrag en sexueel wangedrag. Je kunt deze melding versturen aan het bestuur of (een van de) vertrouwenscontactpersonen, dat is aan jou. Ook kun je er voor kiezen dat er contact met je mag worden opgenomen als je graag terugkoppeling wilt, uiteraard is dit niet verplicht."
+      subtitle: "Je kunt hier volledig annoniem een melding maken van ongewenst gedrag en seksueel wangedrag. Je kunt deze melding versturen aan het bestuur of (een van de) vertrouwenscontactpersonen, dat is aan jou. Ook kun je er voor kiezen dat er contact met je mag worden opgenomen als je graag terugkoppeling wilt, uiteraard is dit niet verplicht."
     },
     form: {
       title: "Omschrijving van je melding",
