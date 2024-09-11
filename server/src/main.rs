@@ -1,6 +1,7 @@
 use crate::args::AppArgs;
 use crate::file::{AppConfig, AppStorage, DataFile};
 use clap::Parser;
+use tracing::{debug, trace};
 use tracing_subscriber::fmt::layer;
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
@@ -14,6 +15,9 @@ mod server;
 #[tokio::main]
 async fn main() -> color_eyre::Result<()> {
     init_tracing()?;
+
+    debug!("Debug logging enabled");
+    trace!("Trace logging enabled");
 
     let args = AppArgs::parse();
     let config = AppConfig::try_read(&args.config, true).await?;
