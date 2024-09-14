@@ -1,12 +1,12 @@
 import {Locale} from "@/plugins/locales/locale";
 
 const EN: Locale = {
-  site_title: "Anonymous reporting point",
+  site_title: "Reporting point for intolerant behaviour",
   error: "Something went wrong, please try again later",
   home: {
     welcome: {
-      title: "Welcome to the anonymous reporting point of Sticky",
-      subtitle: "You can make fully anonymous reports here about unnapropriate behaviour or sexual misconduct. You can send this report to (one of the) confidential advisors or to the board, that is completely up to you. Furthermore, you can choose if you want us to contact you if you would like to hear back from us, of course, this is not required",
+      title: "Welcome to the reporting point for intolerant behaviour for Sticky",
+      subtitle: "You can make fully anonymous reports here about of unwanted, transgressive, threatening, humiliating or intimidating behavior. You can send this report to (one of the) confidential advisors or to the board, that is completely up to you. Furthermore, you can choose if you want us to contact you if you would like to hear back from us, of course, this is not required",
     },
     form: {
       title: "Describe your report",

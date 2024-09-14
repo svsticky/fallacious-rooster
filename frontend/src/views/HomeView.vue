@@ -28,7 +28,43 @@
         </h3>
         <p> {{ $t('home.form.subtitle') }} </p>
 
-        <v-form v-model="report.valid">
+        <v-form
+          ref="form"
+          v-model="report.valid"
+        >
+          <v-row align="center">
+            <v-col>
+              <p class="mb-2">
+                {{ $t('home.form.allowContact') }}
+              </p>
+            </v-col>
+            <v-col>
+              <v-checkbox
+                v-model="report.allowContact"
+                color="primary"
+              />
+            </v-col>
+          </v-row>
+
+          <v-row
+            v-if="report.allowContact"
+            align="center"
+          >
+            <v-col>
+              <p class="mb-2">
+                {{ $t('home.form.contactEmailExplanation') }}:
+              </p>
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model="report.contactEmail"
+                :rules="rules.optionalEmail"
+                :label="$t('home.form.contactEmail')"
+                color="primary"
+              />
+            </v-col>
+          </v-row>
+
           <v-textarea
             v-model="report.message"
             style="white-space: normal;"
@@ -64,40 +100,6 @@
               />
             </v-col>
           </v-row>
-
-          <v-row align="center">
-            <v-col>
-              <p class="mb-2">
-                {{ $t('home.form.allowContact') }}
-              </p>
-            </v-col>
-            <v-col>
-              <v-checkbox
-                v-model="report.allowContact"
-                color="primary"
-              />
-            </v-col>
-          </v-row>
-
-          <v-row
-            v-if="report.allowContact"
-            align="center"
-          >
-            <v-col>
-              <p class="mb-2">
-                {{ $t('home.form.contactEmailExplanation') }}:
-              </p>
-            </v-col>
-            <v-col>
-              <v-text-field
-                v-model="report.contactEmail"
-                :rules="rules.optionalEmail"
-                :label="$t('home.form.contactEmail')"
-                validate-on="blur"
-                color="primary"
-              />
-            </v-col>
-          </v-row>
         </v-form>
       </v-card-text>
 
@@ -121,6 +123,7 @@ import {ConfidentialAdvisor} from "@/scripts/config";
 import {InputValidationRules} from "@/main";
 import {Report} from "@/scripts/report"
 import MaterialBanner from "@/views/components/MaterialBanner.vue"
+import {VForm} from "vuetify/components";
 
 interface Data {
   error: string | undefined,
@@ -180,9 +183,7 @@ export default defineComponent({
         required: [
           v => !!v || this.$t("home.form.required")
         ],
-        optionalEmail: [
-          v => v ? (/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/.test(v) || this.$t('home.form.invalidEmail')) : true
-        ]
+        optionalEmail: this.optionalEmailRules()
       }
     }
   },
@@ -190,6 +191,15 @@ export default defineComponent({
       this.loadAdvisors();
   },
   methods: {
+    optionalEmailRules(): InputValidationRules {
+      return [
+        v => this.report.allowContact ? !!v || this.$t("home.form.required") : true,
+        v => v ? (/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/.test(v) || this.$t('home.form.invalidEmail')) : true
+      ];
+    },
+    async validateForm(): Promise<boolean> {
+      return (await (<VForm> this.$refs.form).validate()).valid;
+    },
     async loadAdvisors() {
       const r = await ConfidentialAdvisor.list();
       if(r.isErr()) {
@@ -201,7 +211,7 @@ export default defineComponent({
       this.receivers.push(new Receiver(this.$t('home.form.board'), new BoardReceiver(), ReceiverType.BOARD));
     },
     async submitForm() {
-      if(!this.report.valid) {
+      if(!this.report.valid || !(await this.validateForm())) {
         this.error = this.$t("home.form.invalid");
         return;
       }
@@ -219,7 +229,7 @@ export default defineComponent({
         .length > 0;
 
       this.report.loading = true;
-      const r = await Report.report(this.report.message!, toBoard, toAdvisors, this.report.contactEmail);
+      const r = await Report.report(this.report.message!, toBoard, toAdvisors, this.report.allowContact ? this.report.contactEmail : null);
       this.report.loading = false;
 
       if(r.isErr()) {

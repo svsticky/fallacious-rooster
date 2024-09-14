@@ -1,12 +1,12 @@
 import {Locale} from "@/plugins/locales/locale";
 
 const NL: Locale = {
-  site_title: "Anoniem meldpunt",
+  site_title: "Meldpunt voor intolerant gedrag",
   error: "Er is iets verkeerd gegaan, probeer het later opnieuw",
   home: {
     welcome: {
-      title: "Welkom bij het anonieme meldpunt van Sticky",
-      subtitle: "Je kunt hier volledig annoniem een melding maken van ongewenst gedrag en seksueel wangedrag. Je kunt deze melding versturen aan het bestuur of (een van de) vertrouwenscontactpersonen, dat is aan jou. Ook kun je er voor kiezen dat er contact met je mag worden opgenomen als je graag terugkoppeling wilt, uiteraard is dit niet verplicht."
+      title: "Welkom bij het meldpunt voor intolerant gedrag van Sticky",
+      subtitle: "Je kunt hier volledig anoniem een melding maken van ongewenst, grensoverschrijdend, bedreigend, vernederend of intimiderend gedrag. Je kunt deze melding versturen aan het bestuur of aan (een van) de vertrouwenscontactpersonen, dat is aan jou. Ook kun je er voor kiezen dat er contact met je mag worden opgenomen als je graag terugkoppeling wilt, uiteraard is dit niet verplicht."
     },
     form: {
       title: "Omschrijving van je melding",
@@ -16,7 +16,7 @@ const NL: Locale = {
       invalidEmail: "Het opgegeven email adres is ongeldig",
       required: "Vereist",
       submit: "Melding versturen",
-      toReceivers: "Aan wie wil je dat jouw bericht wordt verstuurd?",
+      toReceivers: "Aan wie wil je dat jouw melding wordt verstuurd?",
       selectReceivers: "Selecteer..",
       allowContact: "Wil je dat we contact met je opnemen naar aanleiding van je melding?",
       contactEmail: "Email adres",
