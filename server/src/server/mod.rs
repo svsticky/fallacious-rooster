@@ -33,8 +33,22 @@ pub async fn run_server(
     let storage = WStorage::new(MutAppStorage(RwLock::new(storage)));
     let host = config.server.domain.clone();
     HttpServer::new(move || {
+        let server_domain = config.server.domain.clone();
+        let frontend_domain = config.frontend.domain.clone();
+
         App::new()
-            .wrap(Cors::permissive())
+            .wrap(
+                Cors::default()
+                    .allowed_origin_fn(move |hv, _req| {
+                        let b = hv.as_bytes();
+
+                        b.ends_with(server_domain.as_bytes()) // Configured server domain
+                        || b.ends_with(frontend_domain.as_bytes()) // Configured frontend domain
+                    })
+                    .allow_any_method()
+                    .allow_any_header()
+                    .supports_credentials(),
+            )
             .wrap(tracing_actix_web::TracingLogger::<NoiselessRootSpanBuilder>::new())
             .app_data(WConfig::new(config.clone()))
             .app_data(storage.clone())

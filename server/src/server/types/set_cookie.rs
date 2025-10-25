@@ -31,7 +31,7 @@ impl<T: Responder> Responder for SetCookie<T> {
             cookie.set_same_site(Some(SameSite::Lax));
         } else {
             cookie.set_same_site(Some(SameSite::None));
-            cookie.set_secure(false);
+            cookie.set_secure(true);
         }
 
         response.add_cookie(&cookie).unwrap();

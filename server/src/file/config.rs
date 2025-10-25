@@ -15,6 +15,7 @@ pub struct AppConfig {
 #[derive(Debug, Default, Clone, Deserialize, Serialize)]
 pub struct FrontendConfig {
     pub home_page_url: String,
+    pub domain: String,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
