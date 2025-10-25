@@ -5,7 +5,7 @@ This reporting point allows you to anonymously send a message to either the boar
 The application does require a login via Koala to avoid spam messages. The board has quite good spam filters, but the confidential advisors might not have.
 Even though login is required, the application takes upmost care to ensure user anonymity.
 
-The original idea for this application was put forward in [the policy of the 10th KKB on the kbALV on 2024-05-21, section 2.2](https://files.svsticky.nl/alv_stukken/2024_05_21_kbALV/Beleidsplan%2010e%20KKB.pdf). 
+The original idea for this application was put forward in [the policy of the 10th KKB on the kbALV on 2024-05-21, section 2.2](https://files.svsticky.nl/alv_stukken/2024_05_21_kbALV/Beleidsplan%2010e%20KKB.pdf) and finalised in [the policy presented at the wALV 2024-09-18, section 2.2](https://files.svsticky.nl/alv_stukken/2024_09_18_wALV/Beleid%20KB18.pdf)
 
 ## CI
 Easily run CI locally with Make:
@@ -25,7 +25,7 @@ Fallacious-rooster uses Koala for user authorization, you need to have this runn
 
 ## Network setup
 Add `fallacious-rooster.localhost` to your hosts file. On Ubuntu this is `/etc/hosts`
-This is rqeuired for cookies.
+This is required for cookies.
 
 ## Server setup
 The server's written in Rust and thus requires a Rust compiler to be installed.
