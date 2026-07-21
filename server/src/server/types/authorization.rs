@@ -1,9 +1,8 @@
+use crate::oauth::OAuthError;
 use crate::server::types::WConfig;
 use actix_web::dev::Payload;
 use actix_web::http::StatusCode;
 use actix_web::{FromRequest, HttpRequest, ResponseError};
-use cabbage::oauth::ClientConfig;
-use cabbage::KoalaApi;
 use std::future::Future;
 use std::pin::Pin;
 use thiserror::Error;
@@ -16,8 +15,8 @@ pub struct Authorization<const ADMIN: bool = false> {
 pub enum AuthorizationError {
     #[error("Authorization token not provided or token invalid")]
     NoToken,
-    #[error("Failed to validate authorization token with Koala")]
-    Koala,
+    #[error("Failed to validate authorization token with OAuth provider")]
+    OAuth,
     #[error("Internal server error")]
     Internal,
     #[error("Forbidden: Admin privileges are required.")]
@@ -47,19 +46,12 @@ impl<const ADMIN: bool> FromRequest for Authorization<ADMIN> {
             };
 
             let config: &WConfig = req.app_data().unwrap();
-            let koala_api = KoalaApi::new(config.koala.koala_host.clone())
-                .map_err(|_| AuthorizationError::Internal)?;
-            let koala_auth = koala_api.oauth_api(ClientConfig::new(
-                config.koala.client_id.clone(),
-                config.koala.client_secret.clone(),
-                config.koala.redirect_uri.clone(),
-            ));
 
-            let userinfo = match koala_auth.get_userinfo(&token).await {
+            let userinfo = match config.oauth.get_userinfo(&token).await {
                 Ok(userinfo) => userinfo,
                 Err(e) => {
-                    return match e.status() {
-                        Some(StatusCode::UNAUTHORIZED) => {
+                    return match e {
+                        OAuthError::Unauthorized => {
                             if Self::ADMIN {
                                 Err(AuthorizationError::NoToken)
                             } else {
@@ -68,7 +60,7 @@ impl<const ADMIN: bool> FromRequest for Authorization<ADMIN> {
                         }
                         _ => {
                             if Self::ADMIN {
-                                Err(AuthorizationError::Koala)
+                                Err(AuthorizationError::OAuth)
                             } else {
                                 Ok(Self { is_admin: false })
                             }
@@ -116,7 +108,7 @@ impl ResponseError for AuthorizationError {
     fn status_code(&self) -> StatusCode {
         match self {
             Self::NoToken => StatusCode::UNAUTHORIZED,
-            Self::Koala => StatusCode::BAD_GATEWAY,
+            Self::OAuth => StatusCode::BAD_GATEWAY,
             Self::Internal => StatusCode::INTERNAL_SERVER_ERROR,
             Self::Forbidden => StatusCode::FORBIDDEN,
         }

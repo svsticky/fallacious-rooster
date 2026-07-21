@@ -10,6 +10,7 @@ use tracing_subscriber::EnvFilter;
 mod args;
 mod email;
 mod file;
+mod oauth;
 mod server;
 
 #[tokio::main]
