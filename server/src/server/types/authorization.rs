@@ -6,6 +6,7 @@ use actix_web::{FromRequest, HttpRequest, ResponseError};
 use std::future::Future;
 use std::pin::Pin;
 use thiserror::Error;
+use tracing::warn;
 
 pub struct Authorization<const ADMIN: bool = false> {
     pub is_admin: bool,
@@ -50,6 +51,7 @@ impl<const ADMIN: bool> FromRequest for Authorization<ADMIN> {
             let userinfo = match config.oauth.get_userinfo(&token).await {
                 Ok(userinfo) => userinfo,
                 Err(e) => {
+                    warn!("Failed to fetch userinfo from OAuth provider: {e:?}");
                     return match e {
                         OAuthError::Unauthorized => {
                             if Self::ADMIN {
@@ -65,7 +67,7 @@ impl<const ADMIN: bool> FromRequest for Authorization<ADMIN> {
                                 Ok(Self { is_admin: false })
                             }
                         }
-                    }
+                    };
                 }
             };
 
@@ -90,11 +92,21 @@ fn get_token(req: &HttpRequest) -> Option<String> {
         },
     };
 
-    if !value.starts_with("Bearer ") {
-        return None;
-    }
+    let decoded = percent_encoding::percent_decode_str(&value)
+        .decode_utf8()
+        .ok()
+        .map(|s| s.to_string())
+        .unwrap_or(value);
 
-    Some(value.chars().skip(7).collect())
+    let trimmed = decoded.trim().trim_matches('"');
+
+    if trimmed.len() >= 7 && trimmed[..7].eq_ignore_ascii_case("Bearer ") {
+        Some(trimmed[7..].trim().to_string())
+    } else if !trimmed.is_empty() && !trimmed.contains(' ') {
+        Some(trimmed.to_string())
+    } else {
+        None
+    }
 }
 
 fn header(req: &HttpRequest, name: &str) -> Option<String> {
@@ -112,5 +124,27 @@ impl ResponseError for AuthorizationError {
             Self::Internal => StatusCode::INTERNAL_SERVER_ERROR,
             Self::Forbidden => StatusCode::FORBIDDEN,
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use actix_web::test::TestRequest;
+
+    #[test]
+    fn test_get_token_header() {
+        let req = TestRequest::default()
+            .insert_header(("Authorization", "Bearer sample_token_123"))
+            .to_http_request();
+        assert_eq!(get_token(&req), Some("sample_token_123".to_string()));
+    }
+
+    #[test]
+    fn test_get_token_cookie_encoded() {
+        let req = TestRequest::default()
+            .cookie(actix_web::cookie::Cookie::new("Authorization", "Bearer%20sample_token_456"))
+            .to_http_request();
+        assert_eq!(get_token(&req), Some("sample_token_456".to_string()));
     }
 }
