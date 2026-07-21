@@ -20,8 +20,8 @@ make help
 ## Development 
 The guide below will tell you roughly how to get started with working on fallacious-rooster.
 
-## Koala
-Fallacious-rooster uses Koala for user authorization, you need to have this running when working on the application.
+## Authentication (OAuth2 / OIDC / Keycloak)
+Fallacious-rooster uses standard OAuth2 / OpenID Connect (OIDC) for user authorization. It supports standard OIDC providers such as Keycloak, Koala, Auth0, Authelia, etc.
 
 ## Network setup
 Add `fallacious-rooster.localhost` to your hosts file. On Ubuntu this is `/etc/hosts`
@@ -32,12 +32,12 @@ The server's written in Rust and thus requires a Rust compiler to be installed.
 
 1. Copy the configuration file
 ```bash
-mv sample_config.json config.json
+cp sample_config.json config.json
 ```
-2. Create an OAuth application on your [Koala instance](http://koala.rails.local:3000/api/oauth/applications)
-    1. Set the redirect URI to match your `config.json` file
-    2. Set the scopes to `member-read openid email profile`
-3. Copy the client ID and client secret from Koala to `config.json` (`koala.client_id` and `koala.client_secret`)
+2. Create an OAuth application on your OIDC Provider (e.g. Keycloak or Koala)
+    1. Set the redirect URI to match your `config.json` file (e.g. `http://fallacious-rooster.local:8080/api/oauth/callback`)
+    2. Set the scopes (e.g. `openid profile email`)
+3. Copy the client ID and client secret to `config.json` under `oauth` (`oauth.client_id`, `oauth.client_secret`, and set `oauth.server_url` to your OIDC provider or Keycloak realm URL).
 4. Start the application, either via Cargo directly:
 ```bash
 cargo run -- --config ./config.json

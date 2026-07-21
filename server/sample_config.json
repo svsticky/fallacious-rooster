@@ -3,8 +3,8 @@
     "port": 8080,
     "domain": "fallacious-rooster.local:8080"
   },
-  "koala": {
-    "koala_host": "http://koala.rails.local:3000",
+  "oauth": {
+    "server_url": "http://localhost:8082/realms/tavern",
     "client_id": "",
     "client_secret": "",
     "redirect_uri": "http://fallacious-rooster.local:8080/api/oauth/callback"

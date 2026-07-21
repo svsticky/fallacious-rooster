@@ -2,11 +2,13 @@ use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 
 use crate::file::DataFile;
+use crate::oauth::OAuthConfig;
 
 #[derive(Debug, Default, Clone, Deserialize, Serialize)]
 pub struct AppConfig {
     pub server: ServerConfig,
-    pub koala: KoalaConfig,
+    #[serde(alias = "koala", alias = "oidc")]
+    pub oauth: OAuthConfig,
     pub email: EmailConfig,
     pub frontend: FrontendConfig,
     pub local_storage: PathBuf,
@@ -23,14 +25,6 @@ pub struct ServerConfig {
     #[serde(default = "default_port")]
     pub port: u16,
     pub domain: String,
-}
-
-#[derive(Debug, Default, Clone, Deserialize, Serialize)]
-pub struct KoalaConfig {
-    pub koala_host: String,
-    pub client_id: String,
-    pub client_secret: String,
-    pub redirect_uri: String,
 }
 
 #[derive(Debug, Default, Clone, Deserialize, Serialize)]
