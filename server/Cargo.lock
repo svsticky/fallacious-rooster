@@ -691,6 +691,7 @@ dependencies = [
  "lettre",
  "nix",
  "noiseless-tracing-actix-web",
+ "percent-encoding",
  "reqwest",
  "serde",
  "serde_json",

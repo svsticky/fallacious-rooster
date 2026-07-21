@@ -27,12 +27,9 @@ impl<T: Responder> Responder for SetCookie<T> {
         cookie.set_http_only(true);
         cookie.set_expires(Expiration::Session);
 
-        if cfg!(debug_assertions) {
-            cookie.set_same_site(Some(SameSite::Lax));
-        } else {
-            cookie.set_same_site(Some(SameSite::None));
-            cookie.set_secure(true);
-        }
+        let is_https = req.connection_info().scheme() == "https";
+        cookie.set_same_site(Some(SameSite::Lax));
+        cookie.set_secure(is_https);
 
         response.add_cookie(&cookie).unwrap();
         response
