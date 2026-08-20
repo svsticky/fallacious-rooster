@@ -86,10 +86,10 @@ fn get_token(req: &HttpRequest) -> Option<String> {
     // Get the authorization from the Authorization header or an Authorization cookie
     let value = match header(req, "Authorization") {
         Some(header_value) => header_value,
-        None => match req.cookie("Authorization") {
-            Some(cookie) => cookie.value().to_string(),
-            None => return None,
-        },
+        None => {
+            let cookie = req.cookie("Authorization")?;
+            cookie.value().to_string()
+        }
     };
 
     let decoded = percent_encoding::percent_decode_str(&value)
@@ -143,7 +143,10 @@ mod tests {
     #[test]
     fn test_get_token_cookie_encoded() {
         let req = TestRequest::default()
-            .cookie(actix_web::cookie::Cookie::new("Authorization", "Bearer%20sample_token_456"))
+            .cookie(actix_web::cookie::Cookie::new(
+                "Authorization",
+                "Bearer%20sample_token_456",
+            ))
             .to_http_request();
         assert_eq!(get_token(&req), Some("sample_token_456".to_string()));
     }
