@@ -29,7 +29,10 @@ export default [
       'vue.config.js',
       'vite.config.ts',
       'src/vite-end.d.ts',
-      "dist/**"
+      'dist/**',
+      '.pnp.cjs',
+      '.pnp.loader.mjs',
+      '.yarn/**'
     ],
   }
 ];

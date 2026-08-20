@@ -92,8 +92,10 @@ impl OAuthConfig {
 
         // 3. Fallbacks if discovery wasn't used/successful or for non-discovery standard Keycloak / OIDC servers
         let auth_final = auth_ep.unwrap_or_else(|| format!("{base}/protocol/openid-connect/auth"));
-        let token_final = token_ep.unwrap_or_else(|| format!("{base}/protocol/openid-connect/token"));
-        let userinfo_final = userinfo_ep.unwrap_or_else(|| format!("{base}/protocol/openid-connect/userinfo"));
+        let token_final =
+            token_ep.unwrap_or_else(|| format!("{base}/protocol/openid-connect/token"));
+        let userinfo_final =
+            userinfo_ep.unwrap_or_else(|| format!("{base}/protocol/openid-connect/userinfo"));
 
         (auth_final, token_final, userinfo_final)
     }
@@ -129,7 +131,9 @@ impl OAuthConfig {
 
         let resp = client.post(&token_ep).form(&params).send().await?;
 
-        if resp.status() == reqwest::StatusCode::UNAUTHORIZED || resp.status() == reqwest::StatusCode::BAD_REQUEST {
+        if resp.status() == reqwest::StatusCode::UNAUTHORIZED
+            || resp.status() == reqwest::StatusCode::BAD_REQUEST
+        {
             return Err(OAuthError::Unauthorized);
         }
 
@@ -137,7 +141,9 @@ impl OAuthConfig {
             let status = resp.status();
             let body = resp.text().await.unwrap_or_default();
             warn!("Token endpoint returned status {status}: {body}");
-            return Err(OAuthError::Internal(format!("Token exchange failed ({status})")));
+            return Err(OAuthError::Internal(format!(
+                "Token exchange failed ({status})"
+            )));
         }
 
         let tokens = resp.json::<TokenResponse>().await?;
@@ -148,13 +154,11 @@ impl OAuthConfig {
         let (_, _, userinfo_ep) = self.discover_endpoints().await;
 
         let client = reqwest::Client::new();
-        let resp = client
-            .get(&userinfo_ep)
-            .bearer_auth(token)
-            .send()
-            .await?;
+        let resp = client.get(&userinfo_ep).bearer_auth(token).send().await?;
 
-        if resp.status() == reqwest::StatusCode::UNAUTHORIZED || resp.status() == reqwest::StatusCode::FORBIDDEN {
+        if resp.status() == reqwest::StatusCode::UNAUTHORIZED
+            || resp.status() == reqwest::StatusCode::FORBIDDEN
+        {
             return Err(OAuthError::Unauthorized);
         }
 
@@ -162,18 +166,26 @@ impl OAuthConfig {
             let status = resp.status();
             let body = resp.text().await.unwrap_or_default();
             warn!("Userinfo endpoint returned status {status}: {body}");
-            return Err(OAuthError::Internal(format!("Failed to fetch userinfo ({status})")));
+            return Err(OAuthError::Internal(format!(
+                "Failed to fetch userinfo ({status})"
+            )));
         }
 
         let json_val: Value = resp.json().await?;
 
-        let sub = json_val.get("sub").and_then(|v| v.as_str()).map(String::from);
+        let sub = json_val
+            .get("sub")
+            .and_then(|v| v.as_str())
+            .map(String::from);
         let name = json_val
             .get("name")
             .or_else(|| json_val.get("preferred_username"))
             .and_then(|v| v.as_str())
             .map(String::from);
-        let email = json_val.get("email").and_then(|v| v.as_str()).map(String::from);
+        let email = json_val
+            .get("email")
+            .and_then(|v| v.as_str())
+            .map(String::from);
 
         let is_admin = check_is_admin(&json_val, &self.client_id);
 
@@ -189,7 +201,11 @@ impl OAuthConfig {
 
 fn check_is_admin(json: &Value, client_id: &str) -> bool {
     // 1. Direct boolean flags
-    if json.get("is_admin").and_then(|v| v.as_bool()).unwrap_or(false) {
+    if json
+        .get("is_admin")
+        .and_then(|v| v.as_bool())
+        .unwrap_or(false)
+    {
         return true;
     }
     if json.get("admin").and_then(|v| v.as_bool()).unwrap_or(false) {
@@ -204,7 +220,10 @@ fn check_is_admin(json: &Value, client_id: &str) -> bool {
 
     // 2. Roles array in root
     if let Some(roles) = json.get("roles").and_then(|v| v.as_array()) {
-        if roles.iter().any(|role| role.as_str().map_or(false, is_admin_role)) {
+        if roles
+            .iter()
+            .any(|role| role.as_str().is_some_and(is_admin_role))
+        {
             return true;
         }
     }
@@ -215,7 +234,10 @@ fn check_is_admin(json: &Value, client_id: &str) -> bool {
         .and_then(|v| v.get("roles"))
         .and_then(|v| v.as_array())
     {
-        if roles.iter().any(|role| role.as_str().map_or(false, is_admin_role)) {
+        if roles
+            .iter()
+            .any(|role| role.as_str().is_some_and(is_admin_role))
+        {
             return true;
         }
     }
@@ -227,14 +249,20 @@ fn check_is_admin(json: &Value, client_id: &str) -> bool {
         .and_then(|v| v.get("roles"))
         .and_then(|v| v.as_array())
     {
-        if roles.iter().any(|role| role.as_str().map_or(false, is_admin_role)) {
+        if roles
+            .iter()
+            .any(|role| role.as_str().is_some_and(is_admin_role))
+        {
             return true;
         }
     }
 
     // 5. Groups array
     if let Some(groups) = json.get("groups").and_then(|v| v.as_array()) {
-        if groups.iter().any(|group| group.as_str().map_or(false, is_admin_role)) {
+        if groups
+            .iter()
+            .any(|group| group.as_str().is_some_and(is_admin_role))
+        {
             return true;
         }
     }
@@ -296,7 +324,9 @@ mod tests {
             client_secret: "secret".into(),
             redirect_uri: "http://localhost:8080/callback".into(),
             scope: None,
-            auth_url: Some("http://localhost:8082/realms/tavern/protocol/openid-connect/auth".into()),
+            auth_url: Some(
+                "http://localhost:8082/realms/tavern/protocol/openid-connect/auth".into(),
+            ),
             token_url: None,
             userinfo_url: None,
         };
